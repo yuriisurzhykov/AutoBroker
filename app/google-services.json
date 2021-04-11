@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "766045506263",
+    "project_id": "autobroker-a59c1",
+    "storage_bucket": "autobroker-a59c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766045506263:android:342a49f21a55ab7438fe92",
+        "android_client_info": {
+          "package_name": "com.yuriysurzhikov.autobroker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "766045506263-525208ce4rg7eriii14i6ghb3d9dpaq2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.yuriysurzhikov.autobroker",
+            "certificate_hash": "ba231f16734497e289a7c917be73d0e175cb693b"
+          }
+        },
+        {
+          "client_id": "766045506263-4tifu9sl5b9i9pdt2r31qbomp8k1ts9g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDe1FstGHPKSpOEW9-DLUr4Bqbr6WRkkyM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "766045506263-4tifu9sl5b9i9pdt2r31qbomp8k1ts9g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
