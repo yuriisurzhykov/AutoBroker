@@ -1,10 +1,10 @@
-package com.yuriysurzhikov.autobroker
+package com.yuriysurzhikov.autobroker.ui.main
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
+import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.yuriysurzhikov.autobroker.R
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         createClient()
-        findViewById<Button>(R.id.google_sign_in).setOnClickListener {
+        findViewById<View>(R.id.google_sign_in).setOnClickListener {
             signIn()
         }
     }
@@ -65,6 +66,8 @@ class MainActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     val user = auth.currentUser
+                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.uid}")
+                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.metadata}")
                     Log.e(TAG, "firebaseAuthWithGoogle: ${user?.displayName}")
                     Log.e(TAG, "firebaseAuthWithGoogle: ${user?.email}")
                     Log.e(TAG, "firebaseAuthWithGoogle: ${user?.phoneNumber}")
