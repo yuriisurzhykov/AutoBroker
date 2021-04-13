@@ -3,4 +3,5 @@
     <string name="greetings_message">Welcome to AutoBroker</string>
     <string name="hint_email_input">Your e-mail</string>
     <string name="or">or</string>
+    <string name="error_fail_login">Error occurred when login!</string>
 </resources>

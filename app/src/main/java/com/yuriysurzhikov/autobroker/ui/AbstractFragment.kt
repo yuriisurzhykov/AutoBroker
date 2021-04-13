@@ -2,10 +2,12 @@ package com.yuriysurzhikov.autobroker.ui
 
 import androidx.fragment.app.Fragment
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@AndroidEntryPoint
 abstract class AbstractFragment : Fragment() {
 
     override fun onStart() {

@@ -14,6 +14,9 @@ interface UserLocalDao {
     @Delete
     fun delete(userRoom: UserRoom)
 
-    @Query("SELECT * FROM usr WHERE strId=:id")
-    fun getUserBy(id: String): UserRoom?
+    @Query("SELECT * FROM usr WHERE userId=:id")
+    fun getUserBy(id: String?): UserRoom?
+
+    @Query("SELECT * FROM USR LIMIT 1")
+    fun getFirstUser(): UserRoom?
 }

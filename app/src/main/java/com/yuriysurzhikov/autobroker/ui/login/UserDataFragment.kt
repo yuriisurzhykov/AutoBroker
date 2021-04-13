@@ -34,4 +34,8 @@ class UserDataFragment : AbstractLoginFragment() {
             startActivity(it)
         }
     }
+
+    companion object {
+        fun newInstance() = UserDataFragment()
+    }
 }

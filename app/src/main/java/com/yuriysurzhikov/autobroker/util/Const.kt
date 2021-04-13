@@ -6,6 +6,6 @@ object Const {
     }
 
     object User {
-
+        const val REGIONS_COLLECTION = "regions"
     }
 }

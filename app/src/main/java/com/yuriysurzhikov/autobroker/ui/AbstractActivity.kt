@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@AndroidEntryPoint
 abstract class AbstractActivity : AppCompatActivity() {
 
     override fun onStart() {

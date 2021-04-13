@@ -1,11 +1,8 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
-import androidx.room.Entity
-import java.util.*
+import android.net.Uri
 
-@Entity(tableName = "carModel")
-class CarModel {
-    var id: String? = UUID.randomUUID().toString()
-    var name: String? = null
-    var carBrand: CarBrand? = null
-}
+data class CarModel(
+    var name: String,
+    var imageSrc: Uri?
+)

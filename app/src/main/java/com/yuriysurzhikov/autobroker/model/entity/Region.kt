@@ -1,5 +1,5 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
-data class FuelType (
+data class Region (
     var name: String
 )

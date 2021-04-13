@@ -1,14 +1,12 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import android.net.Uri
 
-@Entity(tableName = "usr")
 data class User(
-    @PrimaryKey
-    var name: String?,
-    var displayName: String?,
+    var strId: String,
+    var displayName: String,
     var phone: String?,
     var email: String?,
-    var location: UserLocation
+    var photoUrl: Uri?,
+    var location: UserLocation?
 )

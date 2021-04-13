@@ -4,6 +4,6 @@
     <item
         android:id="@+id/first"
         android:icon="@drawable/googleg_disabled_color_18"
-        android:title="Main"
+        android:title="Sign out"
         app:showAsAction="always" />
 </menu>
