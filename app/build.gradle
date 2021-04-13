@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "com.yuriysurzhikov.autobroker"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -68,4 +68,12 @@ dependencies {
     testImplementation "junit:junit:4.13.2"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
+
+
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltViewModels"
+    kapt "androidx.hilt:hilt-compiler:$hiltViewModels"
 }

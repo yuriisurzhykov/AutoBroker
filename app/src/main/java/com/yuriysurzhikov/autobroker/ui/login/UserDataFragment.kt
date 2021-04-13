@@ -9,7 +9,7 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
 
-class UserDataFragment : AbstractFragment() {
+class UserDataFragment : AbstractLoginFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +28,8 @@ class UserDataFragment : AbstractFragment() {
 
     private fun attemptRegistration() {
         Intent(activity, MainActivity::class.java).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }.also {
             startActivity(it)
         }

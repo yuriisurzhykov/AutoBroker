@@ -18,7 +18,8 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
 
-class MainLoginFragment : AbstractFragment() {
+class MainLoginFragment : AbstractLoginFragment() {
+
     private val TAG = LoginActivity::class.simpleName
     private val RC_SIGN_IN: Int = 21
     private var googleSignInClient: GoogleSignInClient? = null
@@ -35,7 +36,7 @@ class MainLoginFragment : AbstractFragment() {
             .requestIdToken(getString(R.string.google_oauth_client_id))
             .requestEmail()
             .build()
-        googleSignInClient = GoogleSignIn.getClient(activity!!, gso)
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
     }
 
     override fun onCreateView(
@@ -75,25 +76,16 @@ class MainLoginFragment : AbstractFragment() {
     private fun firebaseAuthWithGoogle(idToken: String) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(activity!!) { task ->
+            .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val user = auth.currentUser
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.uid}")
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.metadata}")
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.displayName}")
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.email}")
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.phoneNumber}")
-                    Log.e(TAG, "firebaseAuthWithGoogle: ${user?.isEmailVerified}")
-                    if (activity is LoginActivity) {
-                        (activity as LoginActivity).openFragment(UserDataFragment(), "user_data_fragment")
-                    }
+                    auth.currentUser
                 } else {
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                 }
             }.addOnCanceledListener {
-                Log.e(TAG, "firebaseAuthWithGoogle: canceled auth")
+                viewModel
             }.addOnFailureListener {
-                Log.e(TAG, "firebaseAuthWithGoogle: failed to auth")
+
             }
     }
 }

@@ -4,8 +4,11 @@ import android.net.Uri
 import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.repository.IUserRepository
+import javax.inject.Inject
 
-class UserLocalRepositoryImpl : IUserRepository {
+class UserLocalRepositoryImpl @Inject constructor(
+    localDatabase: LocalDatabase
+): IUserRepository {
 
     override fun createUser(user: User) {
 
