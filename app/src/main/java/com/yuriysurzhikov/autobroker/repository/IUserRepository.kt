@@ -1,8 +1,8 @@
 package com.yuriysurzhikov.autobroker.repository
 
 import android.net.Uri
-import com.yuriysurzhikov.autobroker.model.User
-import com.yuriysurzhikov.autobroker.model.UserLocation
+import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 
 interface IUserRepository {
     fun createUser(user: User)

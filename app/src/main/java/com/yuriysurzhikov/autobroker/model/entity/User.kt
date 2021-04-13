@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.model
+package com.yuriysurzhikov.autobroker.model.entity
 
 data class User(
     var name: String?,
