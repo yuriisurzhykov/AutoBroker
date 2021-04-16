@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.repository.local
+package com.yuriysurzhikov.autobroker.repository.sync
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

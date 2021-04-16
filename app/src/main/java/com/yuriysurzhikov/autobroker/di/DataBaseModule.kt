@@ -2,8 +2,11 @@ package com.yuriysurzhikov.autobroker.di
 
 import android.content.Context
 import androidx.room.Room
-import com.yuriysurzhikov.autobroker.repository.ISyncRepository
+import com.yuriysurzhikov.autobroker.repository.sync.ISyncRepository
 import com.yuriysurzhikov.autobroker.repository.local.*
+import com.yuriysurzhikov.autobroker.repository.sync.LocalSyncRepository
+import com.yuriysurzhikov.autobroker.repository.sync.SyncDatabase
+import com.yuriysurzhikov.autobroker.repository.sync.SyncEntitiesDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -46,7 +49,9 @@ object DataBaseModule {
     @Provides
     @Singleton
     fun provideSyncRepository(syncEntitiesDao: SyncEntitiesDao): ISyncRepository {
-        return SyncLocalRepository(syncEntitiesDao)
+        return LocalSyncRepository(
+            syncEntitiesDao
+        )
     }
 
     object Const {

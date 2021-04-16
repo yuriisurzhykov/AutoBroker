@@ -1,5 +1,6 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
 data class FuelType (
-    var name: String
+    val externalId: String,
+    val nameLocalization: List<StringItem> = listOf()
 )
