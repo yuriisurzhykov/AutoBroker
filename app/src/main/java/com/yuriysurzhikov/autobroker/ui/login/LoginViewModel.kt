@@ -1,5 +1,6 @@
 package com.yuriysurzhikov.autobroker.ui.login
 
+import androidx.databinding.ObservableField
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
@@ -23,6 +24,8 @@ constructor(
 
     private val userExists = MutableLiveData<Boolean>()
     private val loginCode = MutableLiveData<Int>()
+
+    val userCity = ObservableField<String>()
 
     fun observeResult(owner: LifecycleOwner, observer: Observer<Int>) {
         loginCode.observe(owner, observer)

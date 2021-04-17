@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -26,13 +27,10 @@ import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 class MainActivity : AbstractActivity() {
 
     private val TAG = MainActivity::class.simpleName
-    private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainActivityViewModel by viewModels()
+    override fun getLayoutRes() = R.layout.activity_main
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.bottomMenu.setOnNavigationItemSelectedListener {
+    override fun onCreated(savedInstanceState: Bundle?) {
+        findViewById<BottomNavigationView>(R.id.bottom_menu).setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.first -> {
                     signOut()
@@ -42,6 +40,13 @@ class MainActivity : AbstractActivity() {
             return@setOnNavigationItemSelectedListener false
         }
         viewModel.observeUser(this, userObserver)
+    }
+
+    private val viewModel: MainActivityViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
     }
 
     private fun signOut() {
@@ -54,6 +59,6 @@ class MainActivity : AbstractActivity() {
     }
 
     private val userObserver = Observer<User?> {
-        binding.user = it
+
     }
 }

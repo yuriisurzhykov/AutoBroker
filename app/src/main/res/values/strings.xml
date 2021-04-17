@@ -4,4 +4,9 @@
     <string name="hint_email_input">Your e-mail</string>
     <string name="or">or</string>
     <string name="error_fail_login">Error occurred when login!</string>
+    <string name="hint_city">City</string>
+    <string name="label_input_your_city">Input your city</string>
+    <string name="btn_register">Register</string>
+    <string name="label_need_more_information">We need a little more information</string>
+    <string name="label_your_region">Your region</string>
 </resources>

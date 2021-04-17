@@ -1,20 +1,23 @@
-package com.yuriysurzhikov.autobroker.repository.sync
+package com.yuriysurzhikov.autobroker.repository.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.yuriysurzhikov.autobroker.model.local.*
 
 @Database(
-    version = 1,
     entities = [
         CarModelRoom::class,
         CarBrandRoom::class,
         FuelTypeCache::class,
         GearboxTypeCache::class,
-        CarTypeCache::class
+        CarTypeCache::class,
+        RegionRoom::class
     ],
+    version = 1,
     exportSchema = false
 )
 abstract class SyncDatabase : RoomDatabase() {
-    abstract fun getSyncDao(): SyncEntitiesDao
+    abstract fun getRegionsDao(): RegionsDao
+    abstract fun getFuelTypesDao(): FuelTypesDao
+    abstract fun getGearBoxTypesDao(): GearBoxTypeDao
 }

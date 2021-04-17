@@ -6,12 +6,11 @@ import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.model.entity.*
 import com.yuriysurzhikov.autobroker.util.Const
 
-class FirebaseSyncRepository :
-    ISyncRepository {
+class FirebaseSyncRepository {
 
     private val database = Firebase.firestore
 
-    override suspend fun fetchRegions(): List<Region> {
+    suspend fun fetchRegions(): List<Region> {
         val totalList = mutableListOf<Region>()
         database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
             value?.documents?.forEach { document ->
@@ -22,7 +21,7 @@ class FirebaseSyncRepository :
         return totalList
     }
 
-    override suspend fun fetchCarBrands(): List<CarBrand> {
+    suspend fun fetchCarBrands(): List<CarBrand> {
         database.collection(Const.Car.CAR_COLLECTION).addSnapshotListener { value, error ->
             value?.documents?.forEach { document ->
                 document
@@ -31,7 +30,7 @@ class FirebaseSyncRepository :
         return emptyList()
     }
 
-    override suspend fun fetchGearboxTypes(): List<GearboxType> {
+    suspend fun fetchGearboxTypes(): List<GearboxType> {
         val totalList = mutableListOf<GearboxType>()
         database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
             value?.documents?.forEach { document ->
@@ -42,7 +41,7 @@ class FirebaseSyncRepository :
         return totalList
     }
 
-    override suspend fun fetchFuelTypes(): List<FuelType> {
+    suspend fun fetchFuelTypes(): List<FuelType> {
         val totalList = mutableListOf<FuelType>()
         database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
             value?.documents?.forEach { document ->

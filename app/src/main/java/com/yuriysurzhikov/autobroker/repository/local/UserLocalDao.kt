@@ -2,14 +2,25 @@ package com.yuriysurzhikov.autobroker.repository.local
 
 import androidx.room.*
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
-import com.yuriysurzhikov.autobroker.repository.ICrudRepository
 
 @Dao
-interface UserLocalDao : ICrudRepository<UserRoom> {
+abstract class UserLocalDao {
+
+    @Delete
+    abstract suspend fun delete(item: UserRoom)
+
+    @Update
+    abstract suspend fun update(item: UserRoom)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun addAll(items: List<UserRoom>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun add(item: UserRoom)
 
     @Query("SELECT * FROM usr WHERE userId=:id")
-    fun getUserBy(id: String?): UserRoom?
+    abstract fun getUserBy(id: String?): UserRoom?
 
     @Query("SELECT * FROM USR LIMIT 1")
-    fun getFirstUser(): UserRoom?
+    abstract fun getFirstUser(): UserRoom?
 }

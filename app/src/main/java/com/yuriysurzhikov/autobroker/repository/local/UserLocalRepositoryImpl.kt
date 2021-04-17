@@ -23,9 +23,9 @@ class UserLocalRepositoryImpl @Inject constructor(
         return localMapper.mapToEntity(userLocal)
     }
 
-    override fun createUser(user: User) {
+    override suspend fun createUser(user: User) {
         val roomUser = localMapper.mapFromEntity(user)!!
-        localDatabase.userRepository().create(roomUser)
+        localDatabase.userRepository().add(roomUser)
     }
 
     override fun updateUser(user: User) {

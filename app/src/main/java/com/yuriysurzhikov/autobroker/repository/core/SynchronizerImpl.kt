@@ -8,11 +8,12 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 
-class SyncronizerImpl @Inject
+class SynchronizerImpl
+@Inject
 constructor(
     private val firebaseSyncRepository: FirebaseSyncRepository,
     private val localSyncRepository: LocalSyncRepository
-) : ISyncronizer {
+) : ISynchronizer {
 
     private lateinit var job: Job
 

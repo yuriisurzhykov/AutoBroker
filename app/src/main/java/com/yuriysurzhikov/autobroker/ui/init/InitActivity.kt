@@ -7,9 +7,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import com.google.firebase.auth.FirebaseAuth
 import com.yuriysurzhikov.autobroker.R
+import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
+import javax.inject.Inject
 import kotlin.math.log
 
 class InitActivity : AbstractActivity() {
@@ -17,10 +19,9 @@ class InitActivity : AbstractActivity() {
     private val TAG = InitActivity::class.simpleName
 
     private val viewModel: InitActivityViewModel by viewModels()
+    override fun getLayoutRes() = R.layout.activity_splash_layout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash_layout)
+    override fun onCreated(savedInstanceState: Bundle?) {
         viewModel.setLoggingObserver(this, userLoggingObserver)
     }
 

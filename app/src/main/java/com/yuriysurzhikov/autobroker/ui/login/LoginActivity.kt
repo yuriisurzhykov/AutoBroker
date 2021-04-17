@@ -2,15 +2,13 @@ package com.yuriysurzhikov.autobroker.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import com.yuriysurzhikov.autobroker.AutoBrokerApp
 import com.yuriysurzhikov.autobroker.R
-import com.yuriysurzhikov.autobroker.model.entity.User
-import com.yuriysurzhikov.autobroker.repository.sync.SyncAdapter
+import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
-import com.yuriysurzhikov.autobroker.util.Const
+import javax.inject.Inject
 
 class LoginActivity :
     AbstractActivity(),
@@ -18,9 +16,12 @@ class LoginActivity :
 
     private val TAG = LoginActivity::class.simpleName
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+    @Inject
+    lateinit var synchronizer: ISynchronizer
+
+    override fun getLayoutRes() = R.layout.activity_login
+
+    override fun onCreated(savedInstanceState: Bundle?) {
         openFragment(MainLoginFragment(), "main_login_fragment")
     }
 
@@ -44,10 +45,8 @@ class LoginActivity :
         openFragment(fragment, "on-boarding_fragment")
     }
 
-    override fun onLoginSuccess(user: User) {
-        AutoBrokerApp.sync(this, Bundle().apply {
-            putString(SyncAdapter.ARG_USER_ID, user.strId)
-        })
+    override fun onLoginSuccess() {
+        AutoBrokerApp.sync(synchronizer)
         Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }.also {

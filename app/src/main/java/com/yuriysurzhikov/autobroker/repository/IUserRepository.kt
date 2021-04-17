@@ -7,7 +7,7 @@ import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 interface IUserRepository {
     fun getMainUser(): User?
     fun getUser(id: String?): User?
-    fun createUser(user: User)
+    suspend fun createUser(user: User)
     fun updateUser(user: User)
     fun deleteUser(user: User)
     fun changeDisplayName(user: User, newName: String?)

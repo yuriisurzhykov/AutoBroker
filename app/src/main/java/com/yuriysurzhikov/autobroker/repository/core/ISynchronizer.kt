@@ -1,6 +1,6 @@
 package com.yuriysurzhikov.autobroker.repository.core
 
-interface ISyncronizer {
+interface ISynchronizer {
     fun performSync()
     fun cancelSync()
 }

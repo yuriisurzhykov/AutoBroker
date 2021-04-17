@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
 
-@Entity(tableName = "fuel")
+@Entity(tableName = "fuelType")
 data class FuelTypeCache (
     @PrimaryKey(autoGenerate = false)
     var id: String = UUID.randomUUID().toString(),
