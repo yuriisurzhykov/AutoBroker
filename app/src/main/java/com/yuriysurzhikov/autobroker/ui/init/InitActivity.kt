@@ -18,32 +18,36 @@ class InitActivity : AbstractActivity() {
 
     private val viewModel: InitActivityViewModel by viewModels()
     override fun getLayoutRes() = R.layout.activity_splash_layout
-    private var userLoginStatus = ErrorCode.ERROR_NO_SUCH_USER
+    private var userLoginStatus: Int? = null
+    private var syncComplete = false
 
     override fun onCreated(savedInstanceState: Bundle?) {
         viewModel.setLoggingObserver(this, userLoggingObserver)
     }
 
     private val userLoggingObserver = Observer<Int> {
-        userLoginStatus = it ?: ErrorCode.ERROR_NO_SUCH_USER
+        it?.let {
+            performLogin(it)
+        }
     }
 
     override fun onSyncSuccess(event: SyncSuccessEvent) {
         super.onSyncSuccess(event)
-        performLogin()
+        viewModel.checkUserSignIn()
     }
 
     override fun onSyncFailed(event: SyncFailedEvent) {
         super.onSyncFailed(event)
-        performLogin()
+        viewModel.checkUserSignIn()
     }
 
-    private fun performLogin() {
-        when (userLoginStatus) {
+    private fun performLogin(loginStatus: Int) {
+        when (loginStatus) {
             ErrorCode.OK -> openMainScreen()
             ErrorCode.ERROR_ON_BOARDING_NEEDED -> openLoginScreen(Bundle().apply {
                 putBoolean(LoginActivity.ARG_OPEN_ON_BOARDING, true)
             })
+            ErrorCode.ERROR_NO_SUCH_USER -> openLoginScreen()
             else -> openLoginScreen()
         }
     }

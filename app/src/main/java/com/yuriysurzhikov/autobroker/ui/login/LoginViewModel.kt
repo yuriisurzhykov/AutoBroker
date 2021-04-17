@@ -51,6 +51,11 @@ constructor(
                         localRepository.createUser(entityMapper.mapFromEntity(user))
                         loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, false))
                     } else {
+                        val userById = localRepository.getUser(user.uid)
+                        if (userById != null) {
+                            userById.isLoggedIn = true
+                            localRepository.updateUser(userById)
+                        }
                         loginCode.postValue(Pair(ErrorCode.OK, false))
                     }
                 }

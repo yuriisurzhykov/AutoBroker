@@ -27,7 +27,7 @@ abstract class UserLocalDao {
     @Query("SELECT * FROM usr WHERE email=:email")
     abstract fun getUserByEmail(email: String?): UserRoom?
 
-    @Query("SELECT * FROM USR LIMIT 1")
+    @Query("SELECT * FROM usr LIMIT 1")
     abstract fun getFirstUser(): UserRoom?
 
     @Transaction

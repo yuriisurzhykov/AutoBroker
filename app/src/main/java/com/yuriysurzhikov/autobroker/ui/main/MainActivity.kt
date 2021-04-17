@@ -48,6 +48,7 @@ class MainActivity : AbstractActivity() {
     }
 
     private fun signOut() {
+        viewModel.logout()
         FirebaseAuth.getInstance().signOut()
         Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

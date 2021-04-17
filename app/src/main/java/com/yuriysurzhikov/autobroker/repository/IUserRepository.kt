@@ -16,4 +16,5 @@ interface IUserRepository {
     suspend fun changeProfileImage(user: User, newImage: Uri?)
     suspend fun changeLocationData(user: User, location: UserLocation)
     suspend fun checkUserExists(id: String): Boolean
+    suspend fun logout()
 }

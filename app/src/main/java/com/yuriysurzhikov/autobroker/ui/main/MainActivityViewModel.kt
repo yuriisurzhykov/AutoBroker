@@ -29,4 +29,10 @@ constructor(
     fun observeUser(owner: LifecycleOwner, observer: Observer<User?>) {
         mUser.observe(owner, observer)
     }
+
+    fun logout() {
+        CoroutineScope(Dispatchers.IO).launch {
+            localDatabase.logout()
+        }
+    }
 }

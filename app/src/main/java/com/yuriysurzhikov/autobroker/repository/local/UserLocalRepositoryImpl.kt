@@ -71,4 +71,12 @@ class UserLocalRepositoryImpl @Inject constructor(
     override suspend fun checkUserExists(id: String): Boolean {
         return getUser(id) != null
     }
+
+    override suspend fun logout() {
+        val userRoom = localDatabase.userRepository().getFirstUser()
+        if (userRoom != null) {
+            userRoom.isLogged = false
+            localDatabase.userRepository().update(userRoom)
+        }
+    }
 }
