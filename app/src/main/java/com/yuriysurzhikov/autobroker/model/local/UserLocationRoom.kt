@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
 data class UserLocationRoom(
     @PrimaryKey(autoGenerate = true)
     val locationId: Long,
-    var city: String?,
-    var region: String?
+    var city: String,
+    var region: String
 )

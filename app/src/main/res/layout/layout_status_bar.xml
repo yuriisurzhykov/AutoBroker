@@ -30,6 +30,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/size_4"
+            android:text="@string/label_synchronization"
             android:textColor="@color/white"
             android:textSize="16sp"
             tools:text="Synchronization" />

@@ -1,14 +1,9 @@
 package com.yuriysurzhikov.autobroker.di
 
 import com.google.firebase.auth.FirebaseUser
-import com.yuriysurzhikov.autobroker.model.entity.FuelType
-import com.yuriysurzhikov.autobroker.model.entity.GearboxType
-import com.yuriysurzhikov.autobroker.model.entity.Region
-import com.yuriysurzhikov.autobroker.model.entity.User
-import com.yuriysurzhikov.autobroker.model.local.FuelTypeCache
-import com.yuriysurzhikov.autobroker.model.local.GearboxTypeCache
-import com.yuriysurzhikov.autobroker.model.local.RegionRoom
-import com.yuriysurzhikov.autobroker.model.local.UserRoom
+import com.yuriysurzhikov.autobroker.model.entity.*
+import com.yuriysurzhikov.autobroker.model.local.*
+import com.yuriysurzhikov.autobroker.repository.local.UserLocalDao
 import com.yuriysurzhikov.autobroker.repository.mappers.*
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
@@ -24,8 +19,11 @@ object EntityMapperModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserMapper(): IEntityMapper<User?, UserRoom?> {
-        return UserLocalMapper()
+    fun provideLocalUserMapper(
+        userLocalDao: UserLocalDao,
+        locationMapper: IEntityMapper<UserLocation?, UserLocationRoom?>
+    ): IEntityMapper<User?, UserRoom?> {
+        return UserLocalMapper(userLocalDao, locationMapper)
     }
 
     @Provides
@@ -50,5 +48,11 @@ object EntityMapperModule {
     @Singleton
     fun provideRegionsMapper(): IEntityMapper<Region, RegionRoom> {
         return RegionsLocalMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideLocationMapper(): IEntityMapper<UserLocation?, UserLocationRoom?> {
+        return LocationLocalMapper()
     }
 }

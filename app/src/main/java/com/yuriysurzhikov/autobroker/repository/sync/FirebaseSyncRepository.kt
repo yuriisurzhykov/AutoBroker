@@ -1,6 +1,8 @@
 package com.yuriysurzhikov.autobroker.repository.sync
 
-import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.EventListener
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.Source
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.model.entity.*
@@ -10,51 +12,19 @@ class FirebaseSyncRepository {
 
     private val database = Firebase.firestore
 
-    suspend fun fetchRegions(): List<Region> {
-        val totalList = mutableListOf<Region>()
-        database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
-            value?.documents?.forEach { document ->
-                val region = Region(document.id, fetchLocalizations(document))
-                totalList.add(region)
-            }
-        }
-        return totalList
+    fun fetchRegions(listener: EventListener<QuerySnapshot>) {
+        database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener(listener)
     }
 
-    suspend fun fetchCarBrands(): List<CarBrand> {
-        database.collection(Const.Car.CAR_COLLECTION).addSnapshotListener { value, error ->
-            value?.documents?.forEach { document ->
-                document
-            }
-        }
-        return emptyList()
+    fun fetchCarBrands(listener: EventListener<QuerySnapshot>) {
+        database.collection(Const.Car.CAR_COLLECTION).addSnapshotListener(listener)
     }
 
-    suspend fun fetchGearboxTypes(): List<GearboxType> {
-        val totalList = mutableListOf<GearboxType>()
-        database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
-            value?.documents?.forEach { document ->
-                val region = GearboxType(document.id, fetchLocalizations(document))
-                totalList.add(region)
-            }
-        }
-        return totalList
+    fun fetchGearboxTypes(eventListener: EventListener<QuerySnapshot>) {
+        database.collection(Const.Dicts.GEAR_TYPE_COLLECTION).addSnapshotListener(eventListener)
     }
 
-    suspend fun fetchFuelTypes(): List<FuelType> {
-        val totalList = mutableListOf<FuelType>()
-        database.collection(Const.Dicts.REGIONS_COLLECTION).addSnapshotListener { value, error ->
-            value?.documents?.forEach { document ->
-                val region = FuelType(document.id, fetchLocalizations(document))
-                totalList.add(region)
-            }
-        }
-        return totalList
-    }
-
-    private fun fetchLocalizations(document: DocumentSnapshot): List<StringItem> {
-        val labelRu = StringItem(Const.General.LABEL_RU, document[Const.General.LABEL_RU] as String)
-        val labelEng = StringItem(Const.General.LABEL_EN, document[Const.General.LABEL_EN] as String)
-        return listOf(labelRu, labelEng)
+    fun fetchFuelTypes(listener: EventListener<QuerySnapshot>) {
+        database.collection(Const.Dicts.FUEL_TYPE_COLLECTION).addSnapshotListener(listener)
     }
 }

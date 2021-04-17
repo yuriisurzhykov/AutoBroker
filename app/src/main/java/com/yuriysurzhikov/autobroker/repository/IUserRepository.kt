@@ -5,14 +5,15 @@ import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 
 interface IUserRepository {
-    fun getMainUser(): User?
-    fun getUser(id: String?): User?
+    suspend fun getMainUser(): User?
+    suspend fun getUser(id: String?): User?
+    suspend fun getUserByLogin(email: String?): User?
     suspend fun createUser(user: User)
-    fun updateUser(user: User)
-    fun deleteUser(user: User)
-    fun changeDisplayName(user: User, newName: String?)
-    fun changePhone(user: User, newPhone: String?)
-    fun changeProfileImage(user: User, newImage: Uri?)
-    fun changeLocationData(user: User, location: UserLocation)
-    fun checkUserExists(id: String): Boolean
+    suspend fun updateUser(user: User)
+    suspend fun deleteUser(user: User)
+    suspend fun changeDisplayName(user: User, newName: String?)
+    suspend fun changePhone(user: User, newPhone: String?)
+    suspend fun changeProfileImage(user: User, newImage: Uri?)
+    suspend fun changeLocationData(user: User, location: UserLocation)
+    suspend fun checkUserExists(id: String): Boolean
 }

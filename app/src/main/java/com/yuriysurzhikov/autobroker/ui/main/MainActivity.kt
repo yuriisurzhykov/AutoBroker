@@ -27,9 +27,14 @@ import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 class MainActivity : AbstractActivity() {
 
     private val TAG = MainActivity::class.simpleName
+
+    private val viewModel: MainActivityViewModel by viewModels()
+    private var binding: ActivityMainBinding? = null
+
     override fun getLayoutRes() = R.layout.activity_main
 
     override fun onCreated(savedInstanceState: Bundle?) {
+        binding = DataBindingUtil.bind(findViewById(R.id.activity_main))
         findViewById<BottomNavigationView>(R.id.bottom_menu).setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.first -> {
@@ -42,13 +47,6 @@ class MainActivity : AbstractActivity() {
         viewModel.observeUser(this, userObserver)
     }
 
-    private val viewModel: MainActivityViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
-
     private fun signOut() {
         FirebaseAuth.getInstance().signOut()
         Intent(this, LoginActivity::class.java).apply {
@@ -59,6 +57,6 @@ class MainActivity : AbstractActivity() {
     }
 
     private val userObserver = Observer<User?> {
-
+        binding?.user = it
     }
 }

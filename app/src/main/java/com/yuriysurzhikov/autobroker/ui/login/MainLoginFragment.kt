@@ -16,15 +16,21 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.R
+import com.yuriysurzhikov.autobroker.databinding.FragmentMainLoginBinding
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
+import com.yuriysurzhikov.autobroker.ui.text.LoginTextWatcher
+import com.yuriysurzhikov.autobroker.util.SoftKeyboardUtil
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.IllegalStateException
 
+@AndroidEntryPoint
 class MainLoginFragment : AbstractLoginFragment() {
 
     private val TAG = LoginActivity::class.simpleName
     private val RC_SIGN_IN: Int = 21
     private var googleSignInClient: GoogleSignInClient? = null
     private lateinit var callback: ILoginCallback
+    private lateinit var binding: FragmentMainLoginBinding
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,15 +58,26 @@ class MainLoginFragment : AbstractLoginFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main_login, container, false)
+        binding = FragmentMainLoginBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.findViewById<View>(R.id.google_sign_in)?.setOnClickListener {
+        binding.viewModel = viewModel
+        binding.usernameWatcher = LoginTextWatcher(binding.loginInput, timerTask)
+        viewModel.observeResult(viewLifecycleOwner, onResultObserver)
+
+        binding.googleSignIn.setOnClickListener {
             signIn()
         }
-        viewModel.observeResult(viewLifecycleOwner, onResultObserver)
+        binding.loginButton.setOnClickListener {
+            if (binding.loginInputText.text.isNullOrBlank()) {
+                binding.loginInput.error = it.context.getString(R.string.error_field_empty)
+            } else {
+                viewModel.tryLogin(binding.loginInputText.text.toString(), true)
+            }
+        }
     }
 
     private fun signIn() {
@@ -88,23 +105,30 @@ class MainLoginFragment : AbstractLoginFragment() {
                 if (task.isSuccessful) {
                     viewModel.tryLogin(Firebase.auth.currentUser)
                 } else {
-                    showError(context?.getString(R.string.error_fail_login))
+                    showMessage(context?.getString(R.string.error_fail_login))
                 }
             }
     }
 
-    private fun showError(message: String?) {
-        Toast.makeText(
-            context,
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
+    private val timerTask = object : Runnable {
+        override fun run() {
+            viewModel.tryLogin(binding.loginInputText.text.toString(), false)
+        }
     }
 
-    private val onResultObserver = Observer<Int> { result ->
-        when (result) {
-            ErrorCode.OK -> callback.onLoginSuccess()
-            ErrorCode.ON_BOARDING_NEEDED -> callback.openOnBoarding()
+    private val onResultObserver = Observer<Pair<Int, Boolean>> { result ->
+        when (result.first) {
+            ErrorCode.OK -> {
+                SoftKeyboardUtil.closeSoftKeyboard(view!!)
+                callback.onLoginSuccess()
+            }
+            ErrorCode.ERROR_NO_SUCH_USER -> {
+                showMessage(context?.getString(R.string.error_no_such_user))
+            }
+            ErrorCode.ERROR_ON_BOARDING_NEEDED -> {
+                SoftKeyboardUtil.closeSoftKeyboard(view!!)
+                callback.openOnBoarding()
+            }
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.yuriysurzhikov.autobroker.util
 
 object Const {
+
+    const val LOGIN_TEXT_TIMER = 1500L
+
     object Car {
         const val CAR_COLLECTION = "car"
     }

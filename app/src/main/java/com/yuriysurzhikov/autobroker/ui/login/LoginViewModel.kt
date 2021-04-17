@@ -1,18 +1,21 @@
 package com.yuriysurzhikov.autobroker.ui.login
 
+import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.databinding.ObservableInt
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.google.firebase.auth.FirebaseUser
+import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.repository.IUserRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class LoginViewModel
 @ViewModelInject
@@ -23,23 +26,73 @@ constructor(
 ) : ViewModel() {
 
     private val userExists = MutableLiveData<Boolean>()
-    private val loginCode = MutableLiveData<Int>()
+    private val loginCode = MutableLiveData<Pair<Int, Boolean>>()
+    private val registrationCode = MutableLiveData<Int>()
 
     val userCity = ObservableField<String>()
+    val loading = ObservableBoolean(false)
+    val selectedRegionPosition = ObservableInt()
 
-    fun observeResult(owner: LifecycleOwner, observer: Observer<Int>) {
+    fun observeResult(owner: LifecycleOwner, observer: Observer<Pair<Int, Boolean>>) {
         loginCode.observe(owner, observer)
     }
 
+    fun observeRegistration(owner: LifecycleOwner, observer: Observer<Int>) {
+        registrationCode.observe(owner, observer)
+    }
+
     fun tryLogin(user: FirebaseUser?) {
+        loading.set(true)
         CoroutineScope(Dispatchers.IO).launch {
-            user?.let {
-                val isUserExists = localRepository.checkUserExists(user.uid)
-                if (!isUserExists) {
-                    localRepository.createUser(entityMapper.mapFromEntity(user))
-                    loginCode.postValue(ErrorCode.ON_BOARDING_NEEDED)
+            try {
+                user?.let {
+                    val isUserExists = localRepository.checkUserExists(user.uid)
+                    if (!isUserExists) {
+                        localRepository.createUser(entityMapper.mapFromEntity(user))
+                        loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, false))
+                    } else {
+                        loginCode.postValue(Pair(ErrorCode.OK, false))
+                    }
+                }
+            } finally {
+                loading.set(false)
+            }
+        }
+    }
+
+    fun tryLogin(id: String?, attemptByUser: Boolean) {
+        loading.set(true)
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val userById = localRepository.getUserByLogin(id)
+                if (userById != null) {
+                    if (!userById.fullRegistration) {
+                        loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, attemptByUser))
+                    } else {
+                        userById.isLoggedIn = true
+                        localRepository.updateUser(userById)
+                        loginCode.postValue(Pair(ErrorCode.OK, attemptByUser))
+                    }
                 } else {
-                    loginCode.postValue(ErrorCode.OK)
+                    loginCode.postValue(Pair(ErrorCode.ERROR_NO_SUCH_USER, attemptByUser))
+                }
+            } finally {
+                loading.set(false)
+            }
+        }
+    }
+
+    fun attemptRegistration(region: Region?, city: String?) {
+        CoroutineScope(Dispatchers.IO).launch {
+            if (region != null && city != null) {
+                try {
+                    val user = localRepository.getMainUser()
+                    user?.location = UserLocation(city, region.externalId)
+                    user?.fullRegistration = true
+                    localRepository.updateUser(user!!)
+                    registrationCode.postValue(ErrorCode.OK)
+                } catch (e: Throwable) {
+                    registrationCode.postValue(ErrorCode.ERROR_UNKNOWN)
                 }
             }
         }

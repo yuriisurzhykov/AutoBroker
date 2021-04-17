@@ -1,7 +1,9 @@
 package com.yuriysurzhikov.autobroker.util
 
 import android.net.Uri
+import android.text.TextWatcher
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
@@ -15,7 +17,12 @@ fun setImageSrcByUri(view: ImageView, uri: Uri?) {
         .into(view)
 }
 
-@BindingAdapter(value = ["adapter"])
-fun setSpinnerAdapter(view: Spinner, adapter: ArrayAdapter<*>) {
+@BindingAdapter("adapter")
+fun setSpinnerAdapter(view: Spinner, adapter: ArrayAdapter<*>?) {
     view.adapter = adapter
+}
+
+@BindingAdapter("textWatcher")
+fun setTextWatcher(view: EditText, watcher: TextWatcher?) {
+    view.addTextChangedListener(watcher)
 }

@@ -7,18 +7,18 @@ import javax.inject.Inject
 
 class GearBoxTypeLocalMapper @Inject constructor() : IEntityMapper<GearboxType, GearboxTypeCache> {
     override fun mapFromEntity(entity: GearboxType): GearboxTypeCache {
-        TODO("Not yet implemented")
+        return GearboxTypeCache(0, entity.externalId, entity.nameLocalizations)
     }
 
     override fun mapToEntity(domain: GearboxTypeCache): GearboxType {
-        TODO("Not yet implemented")
+        return GearboxType(domain.serverId, domain.name)
     }
 
     override fun mapListFromEntity(entities: List<GearboxType>): List<GearboxTypeCache> {
-        TODO("Not yet implemented")
+        return entities.map { mapFromEntity(it) }
     }
 
     override fun mapListToEntity(domains: List<GearboxTypeCache>): List<GearboxType> {
-        TODO("Not yet implemented")
+        return domains.map { mapToEntity(it) }
     }
 }

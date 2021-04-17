@@ -8,5 +8,7 @@ data class User(
     var phone: String?,
     var email: String?,
     var photoUrl: Uri?,
-    var location: UserLocation?
+    var location: UserLocation,
+    var fullRegistration: Boolean,
+    var isLoggedIn: Boolean
 )

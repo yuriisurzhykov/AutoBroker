@@ -2,7 +2,9 @@ package com.yuriysurzhikov.autobroker.repository.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.yuriysurzhikov.autobroker.model.local.*
+import com.yuriysurzhikov.autobroker.repository.utils.StringItemConverters
 
 @Database(
     entities = [
@@ -13,9 +15,10 @@ import com.yuriysurzhikov.autobroker.model.local.*
         CarTypeCache::class,
         RegionRoom::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
+@TypeConverters(StringItemConverters::class)
 abstract class SyncDatabase : RoomDatabase() {
     abstract fun getRegionsDao(): RegionsDao
     abstract fun getFuelTypesDao(): FuelTypesDao

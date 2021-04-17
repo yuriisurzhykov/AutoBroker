@@ -2,6 +2,7 @@ package com.yuriysurzhikov.autobroker.repository.mappers
 
 import com.google.firebase.auth.FirebaseUser
 import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.util.DatabaseUtils
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject
@@ -15,7 +16,9 @@ class FirebaseUserMapper @Inject constructor() : IEntityMapper<FirebaseUser, Use
             entity.phoneNumber,
             entity.email,
             entity.photoUrl,
-            null
+            UserLocation.empty(),
+            fullRegistration = false,
+            isLoggedIn = false
         )
     }
 

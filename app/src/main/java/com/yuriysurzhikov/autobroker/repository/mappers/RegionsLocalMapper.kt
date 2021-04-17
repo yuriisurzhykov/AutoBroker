@@ -5,20 +5,20 @@ import com.yuriysurzhikov.autobroker.model.local.RegionRoom
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject
 
-class RegionsLocalMapper @Inject constructor(): IEntityMapper<Region, RegionRoom> {
+class RegionsLocalMapper @Inject constructor() : IEntityMapper<Region, RegionRoom> {
     override fun mapFromEntity(entity: Region): RegionRoom {
-        TODO("Not yet implemented")
+        return RegionRoom(0, entity.externalId, entity.localizations)
     }
 
     override fun mapToEntity(domain: RegionRoom): Region {
-        TODO("Not yet implemented")
+        return Region(domain.remoteId, domain.name)
     }
 
     override fun mapListFromEntity(entities: List<Region>): List<RegionRoom> {
-        TODO("Not yet implemented")
+        return entities.map { mapFromEntity(it) }
     }
 
     override fun mapListToEntity(domains: List<RegionRoom>): List<Region> {
-        TODO("Not yet implemented")
+        return domains.map { mapToEntity(it) }
     }
 }

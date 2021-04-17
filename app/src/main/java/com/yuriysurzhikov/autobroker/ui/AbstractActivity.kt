@@ -3,6 +3,7 @@ package com.yuriysurzhikov.autobroker.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewStub
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +22,6 @@ import org.greenrobot.eventbus.ThreadMode
 @AndroidEntryPoint
 abstract class AbstractActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAbstractBinding
     private lateinit var syncView: View
     private lateinit var noNetwork: View
 
@@ -29,19 +29,17 @@ abstract class AbstractActivity : AppCompatActivity() {
     abstract fun getLayoutRes(): Int
     abstract fun onCreated(savedInstanceState: Bundle?)
 
-    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_abstract)
-        syncView = binding.statusBar.findViewById<View>(R.id.synchronization)
-        noNetwork = binding.statusBar.findViewById<View>(R.id.no_network)
-        if (!binding.contentStub.isInflated) {
-            binding.contentStub.viewStub?.inflatedId = getLayoutRes()
-            binding.contentStub.setOnInflateListener { _, _ ->
-                onCreated(savedInstanceState)
-            }
-            binding.contentStub.viewStub?.inflate()
+        setContentView(R.layout.activity_abstract)
+        syncView = findViewById(R.id.synchronization)
+        noNetwork = findViewById(R.id.no_network)
+        val contentStub: ViewStub = findViewById(R.id.content_stub)
+        contentStub.layoutResource = getLayoutRes()
+        contentStub.setOnInflateListener { _, _ ->
+            onCreated(savedInstanceState)
         }
+        contentStub.inflate()
     }
 
     override fun onStart() {

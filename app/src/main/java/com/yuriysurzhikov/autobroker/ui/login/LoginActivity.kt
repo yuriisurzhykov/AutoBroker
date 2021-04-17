@@ -8,8 +8,10 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class LoginActivity :
     AbstractActivity(),
     ILoginCallback {
@@ -52,5 +54,10 @@ class LoginActivity :
         }.also {
             startActivity(it)
         }
+    }
+
+    companion object {
+        const val ARG_BUNDLE = "extra_parameters"
+        const val ARG_OPEN_ON_BOARDING = "arg_needed_onboarding"
     }
 }

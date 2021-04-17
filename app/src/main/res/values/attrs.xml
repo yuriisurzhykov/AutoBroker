@@ -3,4 +3,5 @@
     <attr name="app_statusNoNetwork" format="reference" />
     <attr name="app_statusSync" format="reference" />
     <attr name="app_statusProgressIndicator" format="reference" />
+    <attr name="app_singleItemStyle" format="reference" />
 </resources>
