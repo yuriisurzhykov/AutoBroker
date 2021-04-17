@@ -88,7 +88,8 @@ constructor(
     }
 
     private fun fetchLocalizations(document: DocumentSnapshot): List<StringItem> {
-        val labelRu = StringItem(Const.General.LABEL_RU, document[Const.General.LABEL_RU] as String)
+        val labelRu =
+            StringItem(Const.General.LABEL_RU, document[Const.General.LABEL_RU] as String)
         val labelEng =
             StringItem(Const.General.LABEL_EN, document[Const.General.LABEL_EN] as String)
         return listOf(labelRu, labelEng)

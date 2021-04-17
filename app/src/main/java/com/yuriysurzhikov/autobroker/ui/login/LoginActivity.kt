@@ -24,7 +24,12 @@ class LoginActivity :
     override fun getLayoutRes() = R.layout.activity_login
 
     override fun onCreated(savedInstanceState: Bundle?) {
-        openFragment(MainLoginFragment(), "main_login_fragment")
+        val needOpenOnBoarding = intent.getBundleExtra(ARG_BUNDLE)?.getBoolean(ARG_OPEN_ON_BOARDING, false)
+        if (needOpenOnBoarding == true) {
+            openFragment(UserDataFragment.newInstance(), "on_boarding_fragment")
+        } else {
+            openFragment(MainLoginFragment(), "main_login_fragment")
+        }
     }
 
     fun openFragment(fragment: Fragment, tag: String?) {

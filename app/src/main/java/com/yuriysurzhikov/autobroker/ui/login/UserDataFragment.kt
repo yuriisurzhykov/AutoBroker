@@ -48,21 +48,24 @@ class UserDataFragment : AbstractLoginFragment() {
     }
 
     private fun attemptRegistration() {
-        val region = binding.regionAdapter?.getItem(viewModel.selectedRegionPosition.get())
-        viewModel.attemptRegistration(region, binding.cityInput.toString())
+        if (checkAllField()) {
+            val region = binding.regionAdapter?.getItem(viewModel.selectedRegionPosition.get())
+            viewModel.attemptRegistration(region, binding.cityInput.toString())
+        }
     }
 
     private fun checkAllField(): Boolean {
         val selectedPosition = viewModel.selectedRegionPosition.get()
         val isCityNotEmpty = binding.cityInput.toString().isNotEmpty()
-        if (selectedPosition != 0 && isCityNotEmpty) {
+        if ((selectedPosition != 0 || selectedPosition != Adapter.NO_SELECTION) && isCityNotEmpty) {
             return true
         }
+        showMessage(context?.getString(R.string.error_required_fields_empty))
         return false
     }
 
     private val regionsObserver = Observer<List<Region>> {
-        it?.let { regions ->
+        it?.let { _ ->
             val regionList = it.toMutableList()
             regionList.add(
                 0,

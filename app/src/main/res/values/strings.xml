@@ -17,4 +17,5 @@
     <string name="error_field_empty">Required field is empty</string>
     <string name="error_no_such_user">No user with such e-mail!</string>
     <string name="error_fail_login">Error occurred when login!</string>
+    <string name="error_required_fields_empty">One of required field is empty!</string>
 </resources>
