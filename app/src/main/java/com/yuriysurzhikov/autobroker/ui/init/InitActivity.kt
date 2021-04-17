@@ -11,7 +11,9 @@ import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class InitActivity : AbstractActivity() {
 
     private val TAG = InitActivity::class.simpleName

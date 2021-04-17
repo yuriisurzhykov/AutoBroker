@@ -3,7 +3,7 @@ package com.yuriysurzhikov.autobroker.ui.login
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import com.yuriysurzhikov.autobroker.AutoBrokerApp
+import com.yuriysurzhikov.autobroker.AutoBrokerApplication
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
@@ -48,7 +48,7 @@ class LoginActivity :
     }
 
     override fun onLoginSuccess() {
-        AutoBrokerApp.sync(synchronizer)
+        AutoBrokerApplication.sync(synchronizer)
         Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }.also {
