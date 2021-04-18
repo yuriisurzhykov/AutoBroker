@@ -1,8 +1,6 @@
 package com.yuriysurzhikov.autobroker.repository.local
 
 import android.net.Uri
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
 import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
@@ -89,11 +87,17 @@ class UserRepositoryImpl @Inject constructor(
         return getUser(id) != null || remoteUser != null
     }
 
-    override suspend fun logout() {
+    override suspend fun logout(forAllPhones: Boolean) {
         val userRoom = localDatabase.userRepository().getFirstUser()
         if (userRoom != null) {
             userRoom.isLogged = false
             localDatabase.userRepository().update(userRoom)
+            if (forAllPhones) {
+                val user = localMapper.mapToEntity(userRoom)
+                if (user != null) {
+                    firebaseRepository.updateUser(user)
+                }
+            }
         }
     }
 

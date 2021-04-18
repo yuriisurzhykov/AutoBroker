@@ -17,12 +17,12 @@ constructor(
             UserConst.ID to entity.strId,
             UserConst.PASSWORD to entity.password,
             UserConst.DISPLAY_NAME to entity.displayName,
-            UserConst.EMAIL to entity.email.orEmpty(),
             UserConst.PHONE to entity.phone.orEmpty(),
+            UserConst.EMAIL to entity.email.orEmpty(),
             UserConst.PHOTO_URL to entity.photoUrl.toString(),
             UserConst.LOCATION to locationConverter.convertFromLocation(entity.location),
-            UserConst.IS_LOGGED_IN to entity.isLoggedIn,
-            UserConst.IS_FULL_REGISTER to entity.fullRegistration
+            UserConst.IS_FULL_REGISTER to entity.fullRegistration,
+            UserConst.IS_LOGGED_IN to entity.isLoggedIn
         )
     }
 
@@ -31,12 +31,12 @@ constructor(
             domain[UserConst.ID] as String,
             domain[UserConst.PASSWORD] as String,
             domain[UserConst.DISPLAY_NAME] as String,
-            domain[UserConst.EMAIL] as String?,
             domain[UserConst.PHONE] as String?,
+            domain[UserConst.EMAIL] as String?,
             Uri.parse("${domain[UserConst.PHOTO_URL]}"),
             locationConverter.convertToLocation(domain[UserConst.LOCATION] as String),
-            domain[UserConst.IS_LOGGED_IN] as Boolean,
-            domain[UserConst.IS_FULL_REGISTER] as Boolean
+            domain[UserConst.IS_FULL_REGISTER] as Boolean,
+            domain[UserConst.IS_LOGGED_IN] as Boolean
         )
     }
 

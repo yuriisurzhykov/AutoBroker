@@ -17,7 +17,7 @@ constructor(
 
     fun logout() {
         CoroutineScope(Dispatchers.IO).launch {
-            localDatabase.logout()
+            localDatabase.logout(true)
             EventBus.getDefault().postSticky(LogoutEvent())
         }
     }

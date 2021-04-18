@@ -16,6 +16,7 @@ import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Error
 
 class LoginViewModel
 @ViewModelInject
@@ -49,12 +50,16 @@ constructor(
                     val isUserExists = localLocalRepository.checkUserExists(user.uid)
                     if (!isUserExists) {
                         localLocalRepository.createUser(entityMapper.mapFromEntity(user))
-                        loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, false))
+                        loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, true))
                     } else {
                         val userById = localLocalRepository.getUser(user.uid)
                         if (userById != null) {
-                            localLocalRepository.login(userById)
-                            loginCode.postValue(Pair(ErrorCode.OK, false))
+                            if (userById.fullRegistration) {
+                                localLocalRepository.login(userById)
+                                loginCode.postValue(Pair(ErrorCode.OK, true))
+                            } else {
+                                loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, true))
+                            }
                         } else {
                             loginCode.postValue(Pair(ErrorCode.ERROR_FAILED_LOGIN, false))
                         }
