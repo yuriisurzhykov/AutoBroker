@@ -81,7 +81,12 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkUserExists(id: String): Boolean {
-        return getUser(id) != null
+        val localUser = getUser(id)
+        val remoteUser = firebaseRepository.getUser(id)
+        if (localUser == null && remoteUser != null) {
+            createUser(remoteUser)
+        }
+        return getUser(id) != null || remoteUser != null
     }
 
     override suspend fun logout() {

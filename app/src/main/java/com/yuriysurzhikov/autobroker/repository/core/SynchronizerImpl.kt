@@ -8,6 +8,8 @@ import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
+import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.repository.sync.LocalSyncRepository
 import com.yuriysurzhikov.autobroker.repository.sync.FirebaseSyncRepository
 import com.yuriysurzhikov.autobroker.util.Const
@@ -18,6 +20,8 @@ import javax.inject.Inject
 class SynchronizerImpl
 @Inject
 constructor(
+    private val firebaseUserRepository: UserFirebaseRepository,
+    private val localUserRepository: IUserLocalRepository,
     private val firebaseSyncRepository: FirebaseSyncRepository,
     private val localSyncRepository: LocalSyncRepository
 ) : ISynchronizer {
@@ -30,6 +34,7 @@ constructor(
         CoroutineScope(Dispatchers.IO).launch {
             Log.e(TAG, "performSync: sync started")
             EventBus.getDefault().post(SyncStartEvent())
+            syncUser()
             syncRegions()
             syncGearBoxTypes()
         }
@@ -41,10 +46,23 @@ constructor(
         }
     }
 
+    private suspend fun syncUser() {
+        val localUser = localUserRepository.getMainUser()
+        if (localUser != null) {
+            val remoteUser = firebaseUserRepository.getUser(localUser.strId)
+            if (remoteUser != null) {
+                localUserRepository.updateUser(remoteUser)
+            }
+        }
+    }
+
     private fun syncRegions() {
         firebaseSyncRepository.fetchRegions(EventListener { value, error ->
             error?.printStackTrace()
-            Log.e(TAG, "syncRegions: got regions ${value?.documents?.joinToString(separator = "\n") { it.id }}")
+            Log.e(
+                TAG,
+                "syncRegions: got regions ${value?.documents?.joinToString(separator = "\n") { it.id }}"
+            )
             val totalList = mutableListOf<Region>()
             value?.documents?.forEach { document ->
                 val region = Region(document.id, fetchLocalizations(document))

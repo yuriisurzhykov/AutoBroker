@@ -31,7 +31,7 @@ constructor(
 
     override suspend fun createUser(user: User) {
         val firebaseUser = userRemoteMapper.mapFromEntity(user)
-        firestore.collection(Const.UserConst.USER_COLLECTION).add(firebaseUser)
+        firestore.collection(Const.UserConst.USER_COLLECTION).document(user.strId).set(firebaseUser)
     }
 
     override suspend fun updateUser(user: User) {

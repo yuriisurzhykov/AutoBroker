@@ -1,11 +1,13 @@
 package com.yuriysurzhikov.autobroker.ui.list
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class MutableRecyclerAdapter<T, Holder>
 @JvmOverloads
 constructor(items: List<T>? = emptyList()) :
-        RecyclerView.Adapter<Holder>(),
+    RecyclerView.Adapter<Holder>(),
     IMutableAdapter<T> where Holder : RecyclerView.ViewHolder {
 
     @JvmField
@@ -52,5 +54,9 @@ constructor(items: List<T>? = emptyList()) :
         } else {
             throw IllegalArgumentException("There is no item at position $position!")
         }
+    }
+
+    protected fun getLayoutInflater(parent: ViewGroup): LayoutInflater {
+        return LayoutInflater.from(parent.context)
     }
 }

@@ -83,10 +83,6 @@ class UserActionsAdapter :
         onItemClickListener = listener
     }
 
-    private fun getLayoutInflater(parent: ViewGroup): LayoutInflater {
-        return LayoutInflater.from(parent.context)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActionViewHolder {
         return ActionViewHolder.instantiate(
             getLayoutInflater(parent),

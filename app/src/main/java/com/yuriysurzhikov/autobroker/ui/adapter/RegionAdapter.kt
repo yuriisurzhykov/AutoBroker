@@ -27,7 +27,7 @@ class RegionAdapter(context: Context, objects: Array<out Region>) :
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val item = super.getView(position, convertView, parent) as TextView
-        item.text = mItems[position].localizations[0].label
+        item.text = mItems[position].localizations[0].value
         return item
     }
 }

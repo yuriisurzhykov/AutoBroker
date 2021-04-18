@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.yuriysurzhikov.autobroker.model.entity.Action
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
+import com.yuriysurzhikov.autobroker.ui.settings.FragmentUserDetails
 import com.yuriysurzhikov.autobroker.util.Const
 
 class ActionNavigator : IBaseNavigator<Action> {
@@ -24,8 +25,13 @@ class ActionNavigator : IBaseNavigator<Action> {
     }
 
     override fun onItemClick(item: Action, position: Int) {
-        when(item.reference) {
-            Const.GeneralConst.ACTION_LOGOUT -> navigationCallback?.attemptLogout()
+        when (item.reference) {
+            Const.GeneralConst.ACTION_LOGOUT -> {
+                navigationCallback?.attemptLogout()
+            }
+            Const.GeneralConst.ACTION_FULL_INFO -> {
+                navigationCallback?.showFragment(FragmentUserDetails.newInstance())
+            }
         }
     }
 }

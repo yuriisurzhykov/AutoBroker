@@ -7,7 +7,7 @@ class StringItemConverters {
 
     @TypeConverter
     fun convertToString(item: StringItem): String {
-        return "${item.id}|${item.label}"
+        return "${item.value}|${item.value}"
     }
 
     @TypeConverter
@@ -19,7 +19,7 @@ class StringItemConverters {
     @TypeConverter
     fun convertStringItemList(items: List<StringItem>): String {
         return items.joinToString(separator = ",") {
-            "${it.id}|${it.label}"
+            "${it.value}|${it.value}"
         }
     }
 
