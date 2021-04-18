@@ -11,7 +11,7 @@ import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
-import com.yuriysurzhikov.autobroker.repository.IUserRepository
+import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ class LoginViewModel
 @ViewModelInject
 constructor(
     @Assisted private val savedStateHandle: SavedStateHandle,
-    private val localRepository: IUserRepository,
+    private val localLocalRepository: IUserLocalRepository,
     private val entityMapper: IEntityMapper<FirebaseUser, User>
 ) : ViewModel() {
 
@@ -46,17 +46,18 @@ constructor(
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 user?.let {
-                    val isUserExists = localRepository.checkUserExists(user.uid)
+                    val isUserExists = localLocalRepository.checkUserExists(user.uid)
                     if (!isUserExists) {
-                        localRepository.createUser(entityMapper.mapFromEntity(user))
+                        localLocalRepository.createUser(entityMapper.mapFromEntity(user))
                         loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, false))
                     } else {
-                        val userById = localRepository.getUser(user.uid)
+                        val userById = localLocalRepository.getUser(user.uid)
                         if (userById != null) {
-                            userById.isLoggedIn = true
-                            localRepository.updateUser(userById)
+                            localLocalRepository.login(userById)
+                            loginCode.postValue(Pair(ErrorCode.OK, false))
+                        } else {
+                            loginCode.postValue(Pair(ErrorCode.ERROR_FAILED_LOGIN, false))
                         }
-                        loginCode.postValue(Pair(ErrorCode.OK, false))
                     }
                 }
             } finally {
@@ -69,13 +70,12 @@ constructor(
         loading.set(true)
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val userById = localRepository.getUserByLogin(id)
+                val userById = localLocalRepository.getUserByLogin(id)
                 if (userById != null) {
                     if (!userById.fullRegistration) {
                         loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, attemptByUser))
                     } else {
-                        userById.isLoggedIn = true
-                        localRepository.updateUser(userById)
+                        localLocalRepository.login(userById)
                         loginCode.postValue(Pair(ErrorCode.OK, attemptByUser))
                     }
                 } else {
@@ -91,10 +91,10 @@ constructor(
         CoroutineScope(Dispatchers.IO).launch {
             if (region != null && city != null) {
                 try {
-                    val user = localRepository.getMainUser()
+                    val user = localLocalRepository.getMainUser()
                     user?.location = UserLocation(city, region.externalId)
                     user?.fullRegistration = true
-                    localRepository.updateUser(user!!)
+                    localLocalRepository.updateUser(user!!)
                     registrationCode.postValue(ErrorCode.OK)
                 } catch (e: Throwable) {
                     registrationCode.postValue(ErrorCode.ERROR_UNKNOWN)

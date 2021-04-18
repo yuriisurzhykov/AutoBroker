@@ -7,6 +7,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
 
@@ -25,4 +26,9 @@ fun setSpinnerAdapter(view: Spinner, adapter: ArrayAdapter<*>?) {
 @BindingAdapter("textWatcher")
 fun setTextWatcher(view: EditText, watcher: TextWatcher?) {
     view.addTextChangedListener(watcher)
+}
+
+@BindingAdapter("recyclerAdapter")
+fun setRecyclerAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+    view.adapter = adapter
 }

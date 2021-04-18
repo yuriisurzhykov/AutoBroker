@@ -1,15 +1,12 @@
 package com.yuriysurzhikov.autobroker.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.view.ViewStub
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.yuriysurzhikov.autobroker.R
-import com.yuriysurzhikov.autobroker.databinding.ActivityAbstractBinding
 import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent

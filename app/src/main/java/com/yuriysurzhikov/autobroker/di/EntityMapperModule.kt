@@ -5,6 +5,7 @@ import com.yuriysurzhikov.autobroker.model.entity.*
 import com.yuriysurzhikov.autobroker.model.local.*
 import com.yuriysurzhikov.autobroker.repository.local.UserLocalDao
 import com.yuriysurzhikov.autobroker.repository.mappers.*
+import com.yuriysurzhikov.autobroker.repository.utils.LocationConverter
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
 import dagger.Provides
@@ -54,5 +55,11 @@ object EntityMapperModule {
     @Singleton
     fun provideLocationMapper(): IEntityMapper<UserLocation?, UserLocationRoom?> {
         return LocationLocalMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideRemoteUserMapper(converter: LocationConverter): IEntityMapper<User, Map<String, Any?>> {
+        return UserRemoteMapper(converter)
     }
 }

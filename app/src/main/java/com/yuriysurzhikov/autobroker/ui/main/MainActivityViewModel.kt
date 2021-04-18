@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.events.LogoutEvent
 import com.yuriysurzhikov.autobroker.repository.local.UserLocalRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
 
 class MainActivityViewModel
 @ViewModelInject
@@ -33,6 +35,7 @@ constructor(
     fun logout() {
         CoroutineScope(Dispatchers.IO).launch {
             localDatabase.logout()
+            EventBus.getDefault().postSticky(LogoutEvent())
         }
     }
 }

@@ -3,8 +3,6 @@ package com.yuriysurzhikov.autobroker.repository.core
 import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
 import com.yuriysurzhikov.autobroker.model.entity.GearboxType
 import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
@@ -16,7 +14,6 @@ import com.yuriysurzhikov.autobroker.util.Const
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
-import kotlin.math.log
 
 class SynchronizerImpl
 @Inject
@@ -89,9 +86,9 @@ constructor(
 
     private fun fetchLocalizations(document: DocumentSnapshot): List<StringItem> {
         val labelRu =
-            StringItem(Const.General.LABEL_RU, document[Const.General.LABEL_RU] as String)
+            StringItem(Const.GeneralConst.LABEL_RU, document[Const.GeneralConst.LABEL_RU] as String)
         val labelEng =
-            StringItem(Const.General.LABEL_EN, document[Const.General.LABEL_EN] as String)
+            StringItem(Const.GeneralConst.LABEL_EN, document[Const.GeneralConst.LABEL_EN] as String)
         return listOf(labelRu, labelEng)
     }
 }

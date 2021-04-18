@@ -1,9 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/first"
-        android:icon="@drawable/googleg_disabled_color_18"
-        android:title="Sign out"
-        app:showAsAction="always" />
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/label_home" />
+
+    <item
+        android:id="@+id/finder"
+        android:icon="@drawable/ic_menu_cube"
+        android:title="@string/label_finder" />
+
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/label_settings" />
+
 </menu>

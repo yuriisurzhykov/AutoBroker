@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="user"
+            type="com.yuriysurzhikov.autobroker.model.entity.User" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/window_background_color">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_color"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="0dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
+                android:layout_width="@dimen/profile_image_size"
+                android:layout_height="@dimen/profile_image_size"
+                android:layout_margin="@dimen/default_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:photoUri="@{user.photoUrl}" />
+
+            <TextView
+                android:id="@+id/user_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/small_padding"
+                android:layout_marginTop="@dimen/default_padding"
+                android:text="@{user.phone}"
+                android:textAppearance="@style/Theme.AutoBroker.TextAppearance.Subtitle.OnPrimary"
+                app:layout_constraintBottom_toTopOf="@+id/username"
+                app:layout_constraintStart_toEndOf="@+id/profile_image"
+                app:layout_constraintTop_toTopOf="@+id/profile_image"
+                tools:text="Broker" />
+
+            <TextView
+                android:id="@+id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/small_padding"
+                android:text="@{user.displayName}"
+                android:textAppearance="@style/Theme.AutoBroker.TextAppearance.Title.OnPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintStart_toStartOf="@id/user_status"
+                app:layout_constraintTop_toBottomOf="@+id/user_status"
+                tools:text="Username" />
+
+            <ImageView
+                android:id="@+id/edit_profile"
+                android:layout_width="32dp"
+                android:layout_height="35dp"
+                android:layout_marginEnd="@dimen/default_padding"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:padding="@dimen/size_8"
+                android:src="@drawable/ic_pencil"
+                app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/profile_image"
+                app:tint="@color/white" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/actions_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_padding"
+            android:background="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/profile_details"
+            tools:listitem="@layout/list_item_action" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

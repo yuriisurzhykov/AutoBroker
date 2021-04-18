@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="google_oauth_client_id" translatable="false" formatted="false">766045506263-4tifu9sl5b9i9pdt2r31qbomp8k1ts9g.apps.googleusercontent.com</string>
+    <string name="google_oauth_client_id" formatted="false" translatable="false">766045506263-4tifu9sl5b9i9pdt2r31qbomp8k1ts9g.apps.googleusercontent.com</string>
 </resources>

@@ -1,54 +1,49 @@
 package com.yuriysurzhikov.autobroker.ui.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
+import android.view.MenuItem
 import androidx.activity.viewModels
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
+import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.ActivityMainBinding
-import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.events.LogoutEvent
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
+import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
+import com.yuriysurzhikov.autobroker.ui.menu.NavigationManager
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
-class MainActivity : AbstractActivity() {
+class MainActivity :
+    AbstractActivity(),
+    INavigationCallbacks,
+    BottomNavigationView.OnNavigationItemSelectedListener {
 
     private val TAG = MainActivity::class.simpleName
 
     private val viewModel: MainActivityViewModel by viewModels()
     private var binding: ActivityMainBinding? = null
 
+    private lateinit var navigationManager: NavigationManager
+
     override fun getLayoutRes() = R.layout.activity_main
 
     override fun onCreated(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.bind(findViewById(R.id.activity_main))
-        findViewById<BottomNavigationView>(R.id.bottom_menu).setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.first -> {
-                    signOut()
-                    return@setOnNavigationItemSelectedListener true
-                }
-            }
-            return@setOnNavigationItemSelectedListener false
-        }
-        viewModel.observeUser(this, userObserver)
+        navigationManager = NavigationManager(this)
+        binding?.bottomMenu?.setOnNavigationItemSelectedListener(this)
+        binding?.fragmentPager?.adapter = navigationManager.createPagerAdapter()
+        binding?.fragmentPager?.registerOnPageChangeCallback(onPageChangeCallback)
     }
 
     private fun signOut() {
-        viewModel.logout()
         FirebaseAuth.getInstance().signOut()
         Intent(this, LoginActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -57,7 +52,47 @@ class MainActivity : AbstractActivity() {
         }
     }
 
-    private val userObserver = Observer<User?> {
-        binding?.user = it
+    override fun showFragment(fragment: Fragment, tag: String?) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, fragment, tag)
+            .addToBackStack(tag)
+            .commit()
+    }
+
+    override fun openIntent(intent: Intent) {
+        startActivity(intent)
+    }
+
+    override fun attemptLogout() {
+        viewModel.logout()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        binding?.fragmentPager?.currentItem = when (item.itemId) {
+            R.id.home -> 0
+            R.id.finder -> 1
+            R.id.settings -> 2
+            else -> 0
+        }
+        return true
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC, sticky = true, priority = 1)
+    fun onLogout(event: LogoutEvent) {
+        EventBus.getDefault().removeStickyEvent(event)
+        signOut()
+    }
+
+    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
+        override fun onPageSelected(position: Int) {
+            binding?.bottomMenu?.setOnNavigationItemSelectedListener(null)
+            binding?.bottomMenu?.selectedItemId = when (position) {
+                0 -> R.id.home
+                1 -> R.id.finder
+                2 -> R.id.settings
+                else -> R.id.home
+            }
+            binding?.bottomMenu?.setOnNavigationItemSelectedListener(this@MainActivity)
+        }
     }
 }

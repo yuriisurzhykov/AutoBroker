@@ -5,16 +5,18 @@ import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
-import com.yuriysurzhikov.autobroker.repository.IUserRepository
+import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
+import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject
 
 class UserLocalRepositoryImpl @Inject constructor(
+    val firebaseRepository: UserFirebaseRepository,
     val localDatabase: LocalDatabase,
     val syncDatabase: SyncDatabase,
     val localMapper: IEntityMapper<User?, UserRoom?>,
     val locationMapper: IEntityMapper<UserLocation?, UserLocationRoom?>
-) : IUserRepository {
+) : IUserLocalRepository {
 
     private val userRepository = localDatabase.userRepository()
 
@@ -36,6 +38,7 @@ class UserLocalRepositoryImpl @Inject constructor(
     override suspend fun createUser(user: User) {
         val roomUser = localMapper.mapFromEntity(user)!!
         userRepository.add(roomUser)
+
     }
 
     override suspend fun updateUser(user: User) {
@@ -78,5 +81,18 @@ class UserLocalRepositoryImpl @Inject constructor(
             userRoom.isLogged = false
             localDatabase.userRepository().update(userRoom)
         }
+    }
+
+    override suspend fun login(user: User?) {
+        user?.isLoggedIn = true
+        user?.fullRegistration = true
+        val userRoom = localMapper.mapFromEntity(user)
+        if (userRoom != null) {
+            localDatabase.userRepository().update(userRoom)
+        }
+    }
+
+    override suspend fun register(user: User) {
+
     }
 }
