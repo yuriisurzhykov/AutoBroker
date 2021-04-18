@@ -48,12 +48,15 @@
             android:id="@+id/region_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
+            android:layout_margin="@dimen/default_padding"
+            android:background="@drawable/outlined_background"
+            android:popupBackground="@drawable/outlined_filled_backgound"
             android:selectedItemPosition="@={viewModel.selectedRegionPosition}"
             app:adapter="@{regionAdapter}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/region_label" />
+            app:layout_constraintTop_toBottomOf="@+id/region_label"
+            tools:listitem="@layout/spinner_item_region" />
 
         <TextView
             android:id="@+id/city_label"
@@ -89,9 +92,9 @@
 
         <Button
             android:id="@+id/register_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/default_padding"
+            android:layout_margin="@dimen/default_padding"
             android:enabled="@{!viewModel.loading}"
             android:text="@string/btn_register"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -102,6 +105,7 @@
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:indeterminateTint="@color/primary_color"
             android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
