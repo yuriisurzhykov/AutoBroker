@@ -12,6 +12,10 @@
             type="android.text.TextWatcher" />
 
         <variable
+            name="passwordWatcher"
+            type="android.text.TextWatcher" />
+
+        <variable
             name="viewModel"
             type="com.yuriysurzhikov.autobroker.ui.login.LoginViewModel" />
     </data>
@@ -27,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="@string/greetings_message"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,39 +47,62 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/greetings_text"
-            app:layout_constraintVertical_bias="0.95" />
+            app:layout_constraintVertical_bias="0.7" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_input"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="@dimen/default_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/greetings_text">
+            app:layout_constraintTop_toBottomOf="@+id/greetings_text"
+            app:layout_constraintVertical_bias="0.4">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_input_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_email_input"
-                android:imeOptions="actionDone"
+                android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 app:textWatcher="@{usernameWatcher}" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/login_button"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/password_input"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_padding"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/login_input">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/hint_password_input"
+                android:imeOptions="actionDone"
+                android:inputType="numberPassword"
+                android:maxLines="1"
+                app:textWatcher="@{passwordWatcher}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_padding"
             android:layout_marginEnd="10dp"
             android:text="@string/btn_login"
-            app:layout_constraintEnd_toEndOf="@+id/login_input"
-            app:layout_constraintStart_toStartOf="@+id/login_input"
-            app:layout_constraintTop_toBottomOf="@+id/login_input"
+            app:layout_constraintEnd_toEndOf="@+id/password_input"
+            app:layout_constraintStart_toStartOf="@+id/password_input"
+            app:layout_constraintTop_toBottomOf="@+id/password_input"
             app:layout_constraintWidth_percent="0.2" />
 
         <TextView

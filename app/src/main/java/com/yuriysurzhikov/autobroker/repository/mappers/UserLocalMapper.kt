@@ -36,6 +36,7 @@ class UserLocalMapper @Inject constructor(
                 locationMapper.mapToEntity(userLocalDao.getLocationById(domain.locationId))
             User(
                 domain.userId,
+                domain.password,
                 domain.displayName,
                 domain.phone,
                 domain.email,

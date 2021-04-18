@@ -12,6 +12,7 @@ class FirebaseUserMapper @Inject constructor() : IEntityMapper<FirebaseUser, Use
     override fun mapFromEntity(entity: FirebaseUser): User {
         return User(
             entity.uid,
+            "",
             entity.displayName ?: DatabaseUtils.generateRandomUserName(),
             entity.phoneNumber,
             entity.email,

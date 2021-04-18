@@ -18,6 +18,7 @@ import com.yuriysurzhikov.autobroker.model.entity.StringItem
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.ui.adapter.RegionAdapter
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
+import com.yuriysurzhikov.autobroker.util.isNotNullOrEmpty
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,8 +57,8 @@ class UserDataFragment : AbstractLoginFragment() {
 
     private fun checkAllField(): Boolean {
         val selectedPosition = viewModel.selectedRegionPosition.get()
-        val isCityNotEmpty = binding.cityInput.toString().isNotEmpty()
-        if ((selectedPosition != 0 || selectedPosition != Adapter.NO_SELECTION) && isCityNotEmpty) {
+        val isCityNotEmpty = binding.cityInput.toString().isNotNullOrEmpty()
+        if ((selectedPosition != 0 && selectedPosition != Adapter.NO_SELECTION) && isCityNotEmpty) {
             return true
         }
         showMessage(context?.getString(R.string.error_required_fields_empty))

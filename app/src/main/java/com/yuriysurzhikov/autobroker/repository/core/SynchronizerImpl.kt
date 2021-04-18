@@ -44,10 +44,7 @@ constructor(
     private fun syncRegions() {
         firebaseSyncRepository.fetchRegions(EventListener { value, error ->
             error?.printStackTrace()
-            Log.e(
-                TAG,
-                "syncRegions: got regions ${value?.documents?.joinToString(separator = "\n") { it.id }}"
-            )
+            Log.e(TAG, "syncRegions: got regions ${value?.documents?.joinToString(separator = "\n") { it.id }}")
             val totalList = mutableListOf<Region>()
             value?.documents?.forEach { document ->
                 val region = Region(document.id, fetchLocalizations(document))

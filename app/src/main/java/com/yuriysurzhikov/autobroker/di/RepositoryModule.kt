@@ -6,8 +6,9 @@ import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.local.LocalDatabase
 import com.yuriysurzhikov.autobroker.repository.local.SyncDatabase
-import com.yuriysurzhikov.autobroker.repository.local.UserLocalRepositoryImpl
+import com.yuriysurzhikov.autobroker.repository.local.UserRepositoryImpl
 import com.yuriysurzhikov.autobroker.repository.mappers.UserLocalMapper
+import com.yuriysurzhikov.autobroker.repository.mappers.UserRemoteMapper
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
@@ -27,14 +28,15 @@ object RepositoryModule {
         localDatabase: LocalDatabase,
         syncDatabase: SyncDatabase,
         userMapper: UserLocalMapper,
-        locationMapper: IEntityMapper<UserLocation?, UserLocationRoom?>
+        locationMapper: IEntityMapper<UserLocation?, UserLocationRoom?>,
+        userRemoteMapper: IEntityMapper<User, Map<String, Any?>>
     ): IUserLocalRepository {
-        return UserLocalRepositoryImpl(
+        return UserRepositoryImpl(
             firebaseRepository,
             localDatabase,
-            syncDatabase,
             userMapper,
-            locationMapper
+            locationMapper,
+            userRemoteMapper
         )
     }
 

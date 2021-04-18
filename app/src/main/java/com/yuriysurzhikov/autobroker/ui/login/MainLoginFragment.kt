@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.FragmentMainLoginBinding
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
+import com.yuriysurzhikov.autobroker.ui.text.ErrorTextWatcher
 import com.yuriysurzhikov.autobroker.ui.text.LoginTextWatcher
 import com.yuriysurzhikov.autobroker.util.SoftKeyboardUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +66,9 @@ class MainLoginFragment : AbstractLoginFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
-        binding.usernameWatcher = LoginTextWatcher(binding.loginInput, timerTask)
+        binding.usernameWatcher = LoginTextWatcher(timerTask)
+        binding.usernameWatcher = ErrorTextWatcher(binding.loginInput)
+        binding.passwordWatcher = ErrorTextWatcher(binding.passwordInput)
         viewModel.observeResult(viewLifecycleOwner, onResultObserver)
 
         binding.googleSignIn.setOnClickListener {
@@ -74,9 +77,16 @@ class MainLoginFragment : AbstractLoginFragment() {
         binding.loginButton.setOnClickListener {
             if (binding.loginInputText.text.isNullOrBlank()) {
                 binding.loginInput.error = it.context.getString(R.string.error_field_empty)
-            } else {
-                viewModel.tryLogin(binding.loginInputText.text.toString(), true)
+                if (binding.passwordInputText.text.isNullOrBlank()) {
+                    binding.passwordInput.error = it.context.getString(R.string.error_field_empty)
+                }
+                return@setOnClickListener
             }
+            viewModel.tryLogin(
+                binding.loginInputText.text.toString(),
+                binding.passwordInputText.text.toString(),
+                true
+            )
         }
     }
 
@@ -112,7 +122,11 @@ class MainLoginFragment : AbstractLoginFragment() {
 
     private val timerTask = object : Runnable {
         override fun run() {
-            viewModel.tryLogin(binding.loginInputText.text.toString(), false)
+            viewModel.tryLogin(
+                binding.loginInputText.text.toString(),
+                binding.passwordInputText.text.toString(),
+                false
+            )
         }
     }
 
@@ -123,7 +137,9 @@ class MainLoginFragment : AbstractLoginFragment() {
                 callback.onLoginSuccess()
             }
             ErrorCode.ERROR_NO_SUCH_USER -> {
-                showMessage(context?.getString(R.string.error_no_such_user))
+                if (result.second) {
+                    showMessage(context?.getString(R.string.error_no_such_user))
+                }
             }
             ErrorCode.ERROR_ON_BOARDING_NEEDED -> {
                 SoftKeyboardUtil.closeSoftKeyboard(view!!)

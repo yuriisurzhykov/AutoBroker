@@ -11,6 +11,7 @@ object Const {
     object UserConst {
         const val USER_COLLECTION = "users"
         const val ID = "user-id"
+        const val PASSWORD = "user-password"
         const val IS_LOGGED_IN = "is-logged-in"
         const val IS_FULL_REGISTER = "is-full-register"
         const val PHONE = "phone"
@@ -30,5 +31,6 @@ object Const {
         const val LABEL_RU = "name_ru"
         const val LABEL_EN = "name_en"
         const val ACTION_LOGOUT = "logout"
+        const val ACTION_FULL_INFO = "full_user_info"
     }
 }

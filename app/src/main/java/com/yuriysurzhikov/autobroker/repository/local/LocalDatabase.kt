@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
 
-@Database(version = 2, entities = [UserRoom::class, UserLocationRoom::class], exportSchema = false)
+@Database(version = 3, entities = [UserRoom::class, UserLocationRoom::class], exportSchema = false)
 abstract class LocalDatabase : RoomDatabase() {
     abstract fun userRepository(): UserLocalDao
 }

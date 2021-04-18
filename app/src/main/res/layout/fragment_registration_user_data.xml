@@ -81,6 +81,9 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="25dp"
                 android:hint="@string/hint_city"
+                android:imeOptions="actionDone"
+                android:inputType="textAutoComplete"
+                android:maxLines="1"
                 android:text="@{viewModel.userCity}" />
         </com.google.android.material.textfield.TextInputLayout>
 

@@ -40,6 +40,14 @@ constructor(
             val result = mutableListOf<Action>()
             result.add(
                 Action(
+                    context.getString(R.string.label_full_info),
+                    Const.GeneralConst.ACTION_FULL_INFO,
+                    null,
+                    R.drawable.ic_user
+                )
+            )
+            result.add(
+                Action(
                     context.getString(R.string.label_logout),
                     Const.GeneralConst.ACTION_LOGOUT,
                     null,

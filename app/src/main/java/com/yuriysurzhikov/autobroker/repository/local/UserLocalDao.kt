@@ -1,25 +1,13 @@
 package com.yuriysurzhikov.autobroker.repository.local
 
 import androidx.room.*
-import com.yuriysurzhikov.autobroker.model.entity.City
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
 import com.yuriysurzhikov.autobroker.model.local.UserWithLocation
+import com.yuriysurzhikov.autobroker.repository.ICrudRepository
 
 @Dao
-abstract class UserLocalDao {
-
-    @Delete
-    abstract suspend fun delete(item: UserRoom)
-
-    @Update
-    abstract suspend fun update(item: UserRoom)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun addAll(items: List<UserRoom>)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract suspend fun add(item: UserRoom)
+abstract class UserLocalDao : ICrudRepository<UserRoom> {
 
     @Query("SELECT * FROM usr WHERE userId=:id")
     abstract fun getUserBy(id: String?): UserRoom?

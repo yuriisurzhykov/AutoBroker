@@ -15,6 +15,7 @@ constructor(
     override fun mapFromEntity(entity: User): Map<String, Any?> {
         return mapOf(
             UserConst.ID to entity.strId,
+            UserConst.PASSWORD to entity.password,
             UserConst.DISPLAY_NAME to entity.displayName,
             UserConst.EMAIL to entity.email.orEmpty(),
             UserConst.PHONE to entity.phone.orEmpty(),
@@ -28,13 +29,14 @@ constructor(
     override fun mapToEntity(domain: Map<String, Any?>): User {
         return User(
             domain[UserConst.ID] as String,
+            domain[UserConst.PASSWORD] as String,
             domain[UserConst.DISPLAY_NAME] as String,
-            domain[UserConst.PHONE] as String?,
             domain[UserConst.EMAIL] as String?,
+            domain[UserConst.PHONE] as String?,
             Uri.parse("${domain[UserConst.PHOTO_URL]}"),
             locationConverter.convertToLocation(domain[UserConst.LOCATION] as String),
-            domain[UserConst.IS_FULL_REGISTER] as Boolean,
-            domain[UserConst.IS_LOGGED_IN] as Boolean
+            domain[UserConst.IS_LOGGED_IN] as Boolean,
+            domain[UserConst.IS_FULL_REGISTER] as Boolean
         )
     }
 

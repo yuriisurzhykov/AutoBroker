@@ -66,7 +66,7 @@ constructor(
         }
     }
 
-    fun tryLogin(id: String?, attemptByUser: Boolean) {
+    fun tryLogin(id: String?, password: String, attemptByUser: Boolean) {
         loading.set(true)
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -93,8 +93,9 @@ constructor(
                 try {
                     val user = localLocalRepository.getMainUser()
                     user?.location = UserLocation(city, region.externalId)
+                    user?.isLoggedIn = true
                     user?.fullRegistration = true
-                    localLocalRepository.updateUser(user!!)
+                    localLocalRepository.register(user!!)
                     registrationCode.postValue(ErrorCode.OK)
                 } catch (e: Throwable) {
                     registrationCode.postValue(ErrorCode.ERROR_UNKNOWN)

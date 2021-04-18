@@ -8,7 +8,7 @@ data class UserRoom(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "userId")
     var userId: String,
-    var pin: String,
+    var password: String,
     var email: String?,
     var phone: String?,
     var displayName: String,
