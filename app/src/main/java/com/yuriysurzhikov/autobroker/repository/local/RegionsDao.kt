@@ -2,10 +2,11 @@ package com.yuriysurzhikov.autobroker.repository.local
 
 import androidx.room.*
 import com.yuriysurzhikov.autobroker.model.local.RegionRoom
-import com.yuriysurzhikov.autobroker.repository.ICrudRepository
+import com.yuriysurzhikov.autobroker.repository.core.ICrudRepository
 
 @Dao
-abstract class RegionsDao : ICrudRepository<RegionRoom> {
+abstract class RegionsDao :
+    ICrudRepository<RegionRoom> {
 
     @Query("DELETE FROM region")
     abstract suspend fun clearRegions()

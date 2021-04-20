@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.repository
+package com.yuriysurzhikov.autobroker.repository.core
 
 import androidx.room.Delete
 import androidx.room.Insert

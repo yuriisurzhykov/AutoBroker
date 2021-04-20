@@ -7,8 +7,7 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.model.entity.Action
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
 import com.yuriysurzhikov.autobroker.model.entity.User
-import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
-import com.yuriysurzhikov.autobroker.ui.widget.groupedrecycler.GroupContainer
+import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.util.Const
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

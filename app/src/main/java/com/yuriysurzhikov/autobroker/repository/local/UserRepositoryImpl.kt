@@ -5,7 +5,7 @@ import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
-import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
+import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject

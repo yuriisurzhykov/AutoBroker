@@ -6,13 +6,13 @@ import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.local.FuelTypeCache
 import com.yuriysurzhikov.autobroker.model.local.GearboxTypeCache
 import com.yuriysurzhikov.autobroker.model.local.RegionRoom
-import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
-import com.yuriysurzhikov.autobroker.repository.core.SynchronizerImpl
+import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.sync.FirebaseSyncRepository
 import com.yuriysurzhikov.autobroker.repository.sync.LocalSyncRepository
 import com.yuriysurzhikov.autobroker.repository.local.SyncDatabase
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
+import com.yuriysurzhikov.autobroker.repository.sync.SynchronizerImpl
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
 import dagger.Provides

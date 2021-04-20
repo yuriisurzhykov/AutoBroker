@@ -4,10 +4,11 @@ import androidx.room.*
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
 import com.yuriysurzhikov.autobroker.model.local.UserWithLocation
-import com.yuriysurzhikov.autobroker.repository.ICrudRepository
+import com.yuriysurzhikov.autobroker.repository.core.ICrudRepository
 
 @Dao
-abstract class UserLocalDao : ICrudRepository<UserRoom> {
+abstract class UserLocalDao :
+    ICrudRepository<UserRoom> {
 
     @Query("SELECT * FROM usr WHERE userId=:id")
     abstract fun getUserBy(id: String?): UserRoom?

@@ -5,7 +5,7 @@ import com.google.firebase.firestore.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.yuriysurzhikov.autobroker.model.entity.User
-import com.yuriysurzhikov.autobroker.repository.IUserRepository
+import com.yuriysurzhikov.autobroker.repository.core.IUserRepository
 import com.yuriysurzhikov.autobroker.util.Const
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject

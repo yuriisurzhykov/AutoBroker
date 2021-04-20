@@ -1,5 +1,8 @@
 package com.yuriysurzhikov.autobroker.repository.sync
 
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
@@ -10,19 +13,22 @@ class FirebaseSyncRepository {
 
     private val database = Firebase.firestore
 
-    fun fetchRegions(listener: EventListener<QuerySnapshot>) {
-        database.collection(Const.DictsConst.REGIONS_COLLECTION).addSnapshotListener(listener)
+    suspend fun fetchRegions(): List<DocumentSnapshot>? {
+        val task = database.collection(Const.DictsConst.REGIONS_COLLECTION).get()
+        return Tasks.await(task)?.documents
     }
 
-    fun fetchCarBrands(listener: EventListener<QuerySnapshot>) {
-        database.collection(Const.CarConst.CAR_COLLECTION).addSnapshotListener(listener)
+    suspend fun fetchCarBrands(): List<DocumentSnapshot>? {
+        val task = database.collection(Const.CarConst.CAR_COLLECTION).get()
+        return Tasks.await(task)?.documents
     }
 
-    fun fetchGearboxTypes(eventListener: EventListener<QuerySnapshot>) {
-        database.collection(Const.DictsConst.GEAR_TYPE_COLLECTION).addSnapshotListener(eventListener)
+    suspend fun fetchGearboxTypes(): List<DocumentSnapshot>? {
+        val task = database.collection(Const.DictsConst.GEAR_TYPE_COLLECTION).get()
+        return Tasks.await(task)?.documents
     }
 
-    fun fetchFuelTypes(listener: EventListener<QuerySnapshot>) {
+    suspend fun fetchFuelTypes(listener: EventListener<QuerySnapshot>) {
         database.collection(Const.DictsConst.FUEL_TYPE_COLLECTION).addSnapshotListener(listener)
     }
 }

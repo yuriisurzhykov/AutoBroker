@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.repository
+package com.yuriysurzhikov.autobroker.repository.core
 
 import com.yuriysurzhikov.autobroker.model.entity.User
 

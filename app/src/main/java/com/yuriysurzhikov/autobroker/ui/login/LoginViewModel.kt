@@ -11,7 +11,7 @@ import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.model.entity.UserLocation
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
-import com.yuriysurzhikov.autobroker.repository.IUserLocalRepository
+import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
