@@ -7,4 +7,6 @@ interface IFragmentContainer : IFragmentNavigation {
     fun goToMain()
 
     fun setMainFragment(fragment: Fragment)
+
+    fun onBackPressed(): Boolean
 }

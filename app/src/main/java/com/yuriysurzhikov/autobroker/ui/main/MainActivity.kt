@@ -72,6 +72,15 @@ class MainActivity :
         viewModel.logout()
     }
 
+    override fun onBackPressed() {
+        if (!swipeFragmentNavigation.onBackPressed())
+            super.onBackPressed()
+    }
+
+    override fun onEmptyBackStack() {
+        finish()
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding?.fragmentPager?.currentItem = when (item.itemId) {
             R.id.home -> 0

@@ -1,8 +1,6 @@
 package com.yuriysurzhikov.autobroker.repository.sync
 
-import android.util.Log
 import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.EventListener
 import com.yuriysurzhikov.autobroker.model.entity.GearboxType
 import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
@@ -10,7 +8,10 @@ import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.util.Const
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
 

@@ -46,6 +46,14 @@ class SwipeFragmentNavigation {
         mCurrentFragmentContainer?.addFragment(fragment, tag)
     }
 
+    fun onBackPressed(): Boolean {
+        return if (mCurrentFragmentContainer != null) {
+            mCurrentFragmentContainer!!.onBackPressed()
+        } else {
+            false
+        }
+    }
+
     class Builder {
 
         private val mSwipeNavigation = SwipeFragmentNavigation()
