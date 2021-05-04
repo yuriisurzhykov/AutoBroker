@@ -2,7 +2,6 @@ package com.yuriysurzhikov.autobroker.ui.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
@@ -17,6 +16,7 @@ import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 import com.yuriysurzhikov.autobroker.ui.menu.NavigationManager
+import com.yuriysurzhikov.autobroker.ui.swipefragment.SwipeFragmentNavigation
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -30,6 +30,7 @@ class MainActivity :
 
     private val viewModel: MainActivityViewModel by viewModels()
     private var binding: ActivityMainBinding? = null
+    private lateinit var swipeFragmentNavigation: SwipeFragmentNavigation
 
     private lateinit var navigationManager: NavigationManager
 
@@ -38,9 +39,16 @@ class MainActivity :
     override fun onCreated(savedInstanceState: Bundle?) {
         binding = DataBindingUtil.bind(findViewById(R.id.activity_main))
         navigationManager = NavigationManager(this)
-        binding?.bottomMenu?.setOnNavigationItemSelectedListener(this)
+        swipeFragmentNavigation = SwipeFragmentNavigation.Builder(this)
+            .withBottomNavigationView(binding!!.bottomMenu)
+            .setOnNavigationListener(this)
+            .withViewPager(binding!!.fragmentPager)
+            .setOnPageChangeCallback(onPageChangeCallback)
+            .withFragments(navigationManager.createPagerAdapter().getItems())
+            .build()
+        /*binding?.bottomMenu?.setOnNavigationItemSelectedListener(this)
         binding?.fragmentPager?.adapter = navigationManager.createPagerAdapter()
-        binding?.fragmentPager?.registerOnPageChangeCallback(onPageChangeCallback)
+        binding?.fragmentPager?.registerOnPageChangeCallback(onPageChangeCallback)*/
     }
 
     private fun signOut() {
@@ -53,10 +61,7 @@ class MainActivity :
     }
 
     override fun showFragment(fragment: Fragment, tag: String?) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, fragment, tag)
-            .addToBackStack(tag)
-            .commit()
+        swipeFragmentNavigation.showFragment(fragment, tag)
     }
 
     override fun openIntent(intent: Intent) {

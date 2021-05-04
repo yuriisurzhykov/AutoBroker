@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.ui.adapter
+package com.yuriysurzhikov.autobroker.ui.widget.adapters
 
 import android.content.Context
 import android.view.View

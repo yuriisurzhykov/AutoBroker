@@ -14,6 +14,10 @@ class NavigationPagerAdapter constructor(fragmentManager: FragmentActivity) :
 
     override fun createFragment(position: Int) = mItems[position]
 
+    fun getItems(): List<Fragment> {
+        return ArrayList(mItems)
+    }
+
     class Builder(private val parent: FragmentActivity) {
 
         private lateinit var navigationPagerAdapter: NavigationPagerAdapter

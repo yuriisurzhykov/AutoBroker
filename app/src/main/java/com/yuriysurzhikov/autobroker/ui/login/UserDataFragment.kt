@@ -2,13 +2,10 @@ package com.yuriysurzhikov.autobroker.ui.login
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
-import android.widget.AdapterView
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.yuriysurzhikov.autobroker.R
@@ -16,7 +13,7 @@ import com.yuriysurzhikov.autobroker.databinding.FragmentRegistrationUserDataBin
 import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
-import com.yuriysurzhikov.autobroker.ui.adapter.RegionAdapter
+import com.yuriysurzhikov.autobroker.ui.widget.adapters.RegionAdapter
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
 import com.yuriysurzhikov.autobroker.util.isNotNullOrEmpty
 import dagger.hilt.android.AndroidEntryPoint
