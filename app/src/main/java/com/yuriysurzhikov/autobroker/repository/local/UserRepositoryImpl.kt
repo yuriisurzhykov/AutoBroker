@@ -18,7 +18,7 @@ class UserRepositoryImpl @Inject constructor(
     val userRemoteMapper: IEntityMapper<User, Map<String, Any?>>
 ) : IUserLocalRepository {
 
-    private val userRepository = localDatabase.userRepository()
+    private val userRepository = localDatabase.getUserRepository()
 
     override suspend fun getMainUser(): User? {
         val roomUser = userRepository.getFirstUser()
@@ -30,7 +30,7 @@ class UserRepositoryImpl @Inject constructor(
         val userLocal = userRepository.getUserBy(id)
         if (userLocal == null && userRemote != null) {
             val userRoom = localMapper.mapFromEntity(userRemote)
-            localDatabase.userRepository().add(userRoom!!)
+            localDatabase.getUserRepository().add(userRoom!!)
             return localMapper.mapToEntity(userRoom)
         }
         return localMapper.mapToEntity(userLocal)
@@ -88,10 +88,10 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun logout(forAllPhones: Boolean) {
-        val userRoom = localDatabase.userRepository().getFirstUser()
+        val userRoom = localDatabase.getUserRepository().getFirstUser()
         if (userRoom != null) {
             userRoom.isLogged = false
-            localDatabase.userRepository().update(userRoom)
+            localDatabase.getUserRepository().update(userRoom)
             if (forAllPhones) {
                 val user = localMapper.mapToEntity(userRoom)
                 if (user != null) {
@@ -106,7 +106,7 @@ class UserRepositoryImpl @Inject constructor(
             user.isLoggedIn = true
             val userRoom = localMapper.mapFromEntity(user)
             if (userRoom != null) {
-                localDatabase.userRepository().update(userRoom)
+                localDatabase.getUserRepository().update(userRoom)
                 firebaseRepository.updateUser(user)
             }
         }
@@ -117,7 +117,7 @@ class UserRepositoryImpl @Inject constructor(
         user.fullRegistration = true
         val userRoom = localMapper.mapFromEntity(user)
         if (userRoom != null) {
-            localDatabase.userRepository().update(userRoom)
+            localDatabase.getUserRepository().update(userRoom)
             firebaseRepository.updateUser(user)
         }
     }

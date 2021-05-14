@@ -54,6 +54,10 @@ class SwipeFragmentNavigation {
         }
     }
 
+    fun refresh() {
+        mCurrentFragmentContainer?.refresh()
+    }
+
     class Builder {
 
         private val mSwipeNavigation = SwipeFragmentNavigation()

@@ -7,7 +7,7 @@ import androidx.appcompat.widget.Toolbar
 
 interface IStyleFragment {
     @DrawableRes
-    fun getNavigationIcon(): Int
+    fun getNavigationIcon(): Int?
 
     @ColorRes
     fun getToolbarColor(): Int

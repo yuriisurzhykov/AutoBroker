@@ -2,7 +2,7 @@ package com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe
 
 import androidx.fragment.app.Fragment
 
-interface IFragmentContainer : IFragmentNavigation {
+interface IFragmentContainer : IFragmentNavigation, IRefreshableFragment {
 
     fun goToMain()
 

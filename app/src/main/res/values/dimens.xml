@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Default dimens-->
     <dimen name="size_2">2dp</dimen>
     <dimen name="size_4">4dp</dimen>
     <dimen name="size_6">6dp</dimen>
@@ -11,4 +13,12 @@
     <dimen name="default_list_item_size">60dp</dimen>
     <dimen name="default_action_icon_size">40dp</dimen>
     <dimen name="default_corner_radius">12dp</dimen>
+
+    <!--Text dimens-->
+    <dimen name="title_min_text_size">12sp</dimen>
+    <dimen name="title_max_text_size">24sp</dimen>
+
+    <!--Image dimens-->
+    <dimen name="min_icon_size">35dp</dimen>
+    <dimen name="max_icon_size">65dp</dimen>
 </resources>

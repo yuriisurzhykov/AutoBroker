@@ -29,6 +29,6 @@ fun setTextWatcher(view: EditText, watcher: TextWatcher?) {
 }
 
 @BindingAdapter("recyclerAdapter")
-fun setRecyclerAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>) {
+fun setRecyclerAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {
     view.adapter = adapter
 }

@@ -1,4 +1,8 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
-class Car {
-}
+data class Car (
+    val id: String,
+    val name: String,
+    val iconUrl: String?,
+    val models: List<CarModel>
+)

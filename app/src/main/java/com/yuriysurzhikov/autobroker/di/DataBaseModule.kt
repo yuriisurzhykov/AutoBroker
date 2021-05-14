@@ -26,7 +26,7 @@ object DataBaseModule {
     @Provides
     @Singleton
     fun provideUserLocalDao(localDatabase: LocalDatabase): UserLocalDao {
-        return localDatabase.userRepository()
+        return localDatabase.getUserRepository()
     }
 
     @Provides

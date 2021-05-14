@@ -1,10 +1,12 @@
 package com.yuriysurzhikov.autobroker.di
 
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import com.yuriysurzhikov.autobroker.model.entity.*
 import com.yuriysurzhikov.autobroker.model.local.*
 import com.yuriysurzhikov.autobroker.repository.local.UserLocalDao
 import com.yuriysurzhikov.autobroker.repository.mappers.*
+import com.yuriysurzhikov.autobroker.repository.sync.FirebaseSyncRepository
 import com.yuriysurzhikov.autobroker.repository.utils.LocationConverter
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
@@ -61,5 +63,26 @@ object EntityMapperModule {
     @Singleton
     fun provideRemoteUserMapper(converter: LocationConverter): IEntityMapper<User, Map<String, Any?>> {
         return UserRemoteMapper(converter)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCarFirebaseMapper(
+        modelMapper: IEntityMapper<CarModel, DocumentSnapshot>,
+        firebaseSyncRepository: FirebaseSyncRepository
+    ): IEntityMapper<Car, DocumentSnapshot> {
+        return FirebaseCarMapper(modelMapper, firebaseSyncRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCarBrandLocalMapper(modelMapper: IEntityMapper<CarModel, CarModelRoom>): IEntityMapper<CarBrand, CarWithModelsRoom> {
+        return CarBrandLocalMapper(modelMapper)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCarModelLocalMapper(): IEntityMapper<CarModel, CarModelRoom> {
+        return CarModelLocalMapper()
     }
 }

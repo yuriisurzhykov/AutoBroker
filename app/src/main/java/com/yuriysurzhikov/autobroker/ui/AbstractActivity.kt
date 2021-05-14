@@ -6,10 +6,13 @@ import android.view.ViewStub
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import com.yuriysurzhikov.autobroker.AutoBrokerApplication
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import com.yuriysurzhikov.autobroker.repository.sync.SyncData
 import com.yuriysurzhikov.autobroker.util.ViewUtils
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -29,6 +32,7 @@ abstract class AbstractActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_abstract)
+        AutoBrokerApplication.syncLiveData.observe(this, syncObserver)
         syncView = findViewById(R.id.synchronization)
         noNetwork = findViewById(R.id.no_network)
         val contentStub: ViewStub = findViewById(R.id.content_stub)
@@ -65,5 +69,13 @@ abstract class AbstractActivity : AppCompatActivity() {
     @CallSuper
     open fun onSyncFailed(event: SyncFailedEvent) {
         ViewUtils.setGone(syncView)
+    }
+
+    private val syncObserver = Observer<SyncData> {
+        when(it?.event) {
+            is SyncStartEvent -> onSyncStarted(it.event as SyncStartEvent)
+            is SyncSuccessEvent -> onSyncSuccess(it.event as SyncSuccessEvent)
+            is SyncFailedEvent -> onSyncFailed(it.event as SyncFailedEvent)
+        }
     }
 }

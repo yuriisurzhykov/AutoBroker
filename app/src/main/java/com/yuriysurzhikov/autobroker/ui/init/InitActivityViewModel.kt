@@ -25,7 +25,7 @@ class InitActivityViewModel @ViewModelInject constructor(
 
     fun checkUserSignIn() {
         CoroutineScope(Dispatchers.IO).launch {
-            val user = localDatabase.userRepository().getFirstUser()
+            val user = localDatabase.getUserRepository().getFirstUser()
             val resultCode =
                 if (user == null) ErrorCode.ERROR_NO_SUCH_USER
                 else if (!user.fullRegistration) ErrorCode.ERROR_ON_BOARDING_NEEDED

@@ -7,6 +7,9 @@
     <string name="hint_city">City</string>
     <string name="hint_email_input">Your e-mail</string>
     <string name="hint_password_input">Your password</string>
+    <string name="hint_user_name">Name</string>
+    <string name="hint_phone">Phone</string>
+    <string name="hint_country">Country</string>
     <string name="label_input_your_city">Input your city</string>
     <string name="label_need_more_information">We need a little more information</string>
     <string name="label_your_region">Your region</string>
@@ -28,4 +31,7 @@
     <string name="error_no_such_user">No user with such e-mail or incorrect password!</string>
     <string name="error_fail_login">Error occurred when login!</string>
     <string name="error_required_fields_empty">One of required field is empty!</string>
+    <string name="title_full_details">Full details</string>
+    <string name="btn_submit">Submit</string>
+    <string name="btn_save_changes">Save changes</string>
 </resources>

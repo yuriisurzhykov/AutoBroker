@@ -5,7 +5,9 @@ object Const {
     const val LOGIN_TEXT_TIMER = 1500L
 
     object CarConst {
-        const val CAR_COLLECTION = "car"
+        const val CAR_MODEL_COLLECTION = "models"
+        const val CAR_NAME_FIELD = "name"
+        const val CAR_MODEL_URI_FIELD = "icon"
     }
 
     object UserConst {
@@ -25,6 +27,8 @@ object Const {
         const val REGIONS_COLLECTION = "regions"
         const val FUEL_TYPE_COLLECTION = "fuel_type"
         const val GEAR_TYPE_COLLECTION = "gear_type"
+        const val CARS_COLLECTION = "cars"
+        const val CAR_REGISTRATION_TYPE = "car_registration_type"
     }
 
     object GeneralConst {
@@ -32,5 +36,6 @@ object Const {
         const val LABEL_EN = "name_en"
         const val ACTION_LOGOUT = "logout"
         const val ACTION_FULL_INFO = "full_user_info"
+        const val DEFAULT_ICON_FIELD = "icon"
     }
 }

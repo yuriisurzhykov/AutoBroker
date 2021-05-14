@@ -1,6 +1,8 @@
 package com.yuriysurzhikov.autobroker.model.entity
 
 data class CarBrand(
-    var name: String,
-    var models: List<CarModel>
+    val id: String,
+    val name: String,
+    val iconUrl: String?,
+    val models: List<CarModel>
 )

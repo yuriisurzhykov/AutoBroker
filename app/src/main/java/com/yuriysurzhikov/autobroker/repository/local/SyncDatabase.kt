@@ -15,7 +15,7 @@ import com.yuriysurzhikov.autobroker.repository.utils.StringItemConverters
         CarTypeCache::class,
         RegionRoom::class
     ],
-    version = 2,
+    version = 4,
     exportSchema = false
 )
 @TypeConverters(StringItemConverters::class)
@@ -23,4 +23,5 @@ abstract class SyncDatabase : RoomDatabase() {
     abstract fun getRegionsDao(): RegionsDao
     abstract fun getFuelTypesDao(): FuelTypesDao
     abstract fun getGearBoxTypesDao(): GearBoxTypeDao
+    abstract fun getCarsDao(): CarsDao
 }

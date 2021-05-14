@@ -12,6 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.ActivityMainBinding
 import com.yuriysurzhikov.autobroker.model.events.LogoutEvent
+import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
+import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
@@ -46,9 +48,6 @@ class MainActivity :
             .setOnPageChangeCallback(onPageChangeCallback)
             .withFragments(navigationManager.createPagerAdapter().getItems())
             .build()
-        /*binding?.bottomMenu?.setOnNavigationItemSelectedListener(this)
-        binding?.fragmentPager?.adapter = navigationManager.createPagerAdapter()
-        binding?.fragmentPager?.registerOnPageChangeCallback(onPageChangeCallback)*/
     }
 
     private fun signOut() {
@@ -95,6 +94,16 @@ class MainActivity :
     fun onLogout(event: LogoutEvent) {
         EventBus.getDefault().removeStickyEvent(event)
         signOut()
+    }
+
+    override fun onSyncSuccess(event: SyncSuccessEvent) {
+        super.onSyncSuccess(event)
+        swipeFragmentNavigation.refresh()
+    }
+
+    override fun onSyncFailed(event: SyncFailedEvent) {
+        super.onSyncFailed(event)
+        swipeFragmentNavigation.refresh()
     }
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {

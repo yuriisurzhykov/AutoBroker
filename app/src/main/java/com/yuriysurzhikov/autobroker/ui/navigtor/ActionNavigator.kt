@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import com.yuriysurzhikov.autobroker.model.entity.Action
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
-import com.yuriysurzhikov.autobroker.ui.settings.FragmentUserDetails
+import com.yuriysurzhikov.autobroker.ui.settings.edit.FragmentUserDetails
 import com.yuriysurzhikov.autobroker.util.Const
 
 class ActionNavigator : IBaseNavigator<Action> {

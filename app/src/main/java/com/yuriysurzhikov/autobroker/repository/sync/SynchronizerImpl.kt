@@ -1,9 +1,9 @@
 package com.yuriysurzhikov.autobroker.repository.sync
 
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
-import com.yuriysurzhikov.autobroker.model.entity.GearboxType
-import com.yuriysurzhikov.autobroker.model.entity.Region
-import com.yuriysurzhikov.autobroker.model.entity.StringItem
+import com.google.firebase.storage.FirebaseStorage
+import com.yuriysurzhikov.autobroker.model.entity.*
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
@@ -32,6 +32,8 @@ constructor(
             EventBus.getDefault().post(SyncStartEvent())
             syncRegions()
             syncGearBoxTypes()
+            syncFuelTypes()
+            syncCars()
             EventBus.getDefault().post(SyncSuccessEvent())
         }
     }
@@ -62,11 +64,58 @@ constructor(
         localSyncRepository.insertAllGearTypes(totalList)
     }
 
+    private suspend fun syncFuelTypes() {
+        val totalList = mutableListOf<FuelType>()
+        firebaseSyncRepository.fetchFuelTypes()?.forEach { document ->
+            val fuelType = FuelType(document.id, fetchLocalizations(document))
+            totalList.add(fuelType)
+        }
+        localSyncRepository.clearFuelTypes()
+        localSyncRepository.insertAllFuelTypes(totalList)
+    }
+
+    private suspend fun syncCars() {
+        val totalCarList = mutableListOf<CarBrand>()
+        firebaseSyncRepository.fetchCarBrands()?.forEach { document ->
+            val totalModels = mutableListOf<CarModel>()
+            firebaseSyncRepository.fetchCarModelsByBrand(document.id)?.forEach { modelDoc ->
+                val model = CarModel(
+                    modelDoc.id,
+                    modelDoc[Const.CarConst.CAR_NAME_FIELD].toString(),
+                    fetchIconUrl(modelDoc)
+                )
+                totalModels.add(model)
+            }
+            val car = CarBrand(
+                document.id,
+                document[Const.CarConst.CAR_NAME_FIELD].toString(),
+                fetchIconUrl(document),
+                totalModels
+            )
+            totalCarList.add(car)
+        }
+        localSyncRepository.clearCarBrands()
+        localSyncRepository.insertAllCarBrands(totalCarList)
+    }
+
+    private fun fetchIconUrl(document: DocumentSnapshot): String {
+        val loadTask = FirebaseStorage.getInstance()
+            .getReferenceFromUrl(document[Const.GeneralConst.DEFAULT_ICON_FIELD].toString())
+            .downloadUrl
+        return Tasks.await(loadTask).toString()
+    }
+
     private fun fetchLocalizations(document: DocumentSnapshot): List<StringItem> {
         val labelRu =
-            StringItem(Const.GeneralConst.LABEL_RU, document[Const.GeneralConst.LABEL_RU] as String)
+            StringItem(
+                Const.GeneralConst.LABEL_RU,
+                document[Const.GeneralConst.LABEL_RU] as String?
+            )
         val labelEng =
-            StringItem(Const.GeneralConst.LABEL_EN, document[Const.GeneralConst.LABEL_EN] as String)
+            StringItem(
+                Const.GeneralConst.LABEL_EN,
+                document[Const.GeneralConst.LABEL_EN] as String?
+            )
         return listOf(labelRu, labelEng)
     }
 }

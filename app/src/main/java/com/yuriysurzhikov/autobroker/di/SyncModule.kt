@@ -1,8 +1,10 @@
 package com.yuriysurzhikov.autobroker.di
 
+import com.yuriysurzhikov.autobroker.model.entity.CarBrand
 import com.yuriysurzhikov.autobroker.model.entity.FuelType
 import com.yuriysurzhikov.autobroker.model.entity.GearboxType
 import com.yuriysurzhikov.autobroker.model.entity.Region
+import com.yuriysurzhikov.autobroker.model.local.CarWithModelsRoom
 import com.yuriysurzhikov.autobroker.model.local.FuelTypeCache
 import com.yuriysurzhikov.autobroker.model.local.GearboxTypeCache
 import com.yuriysurzhikov.autobroker.model.local.RegionRoom
@@ -36,13 +38,15 @@ object SyncModule {
         syncRegionDao: SyncDatabase,
         fuelEntityMapper: IEntityMapper<FuelType, FuelTypeCache>,
         regionsEntityMapper: IEntityMapper<Region, RegionRoom>,
-        gearBoxEntityMapper: IEntityMapper<GearboxType, GearboxTypeCache>
+        gearBoxEntityMapper: IEntityMapper<GearboxType, GearboxTypeCache>,
+        carBrandEntityMapper: IEntityMapper<CarBrand, CarWithModelsRoom>
     ): LocalSyncRepository {
         return LocalSyncRepository(
             syncRegionDao,
             fuelEntityMapper,
             regionsEntityMapper,
-            gearBoxEntityMapper
+            gearBoxEntityMapper,
+            carBrandEntityMapper
         )
     }
 
@@ -55,8 +59,6 @@ object SyncModule {
         localSyncRepository: LocalSyncRepository
     ): ISynchronizer {
         return SynchronizerImpl(
-            /*userRepositoryFirebase,
-            userRepositoryLocal,*/
             firebaseSyncRepository,
             localSyncRepository
         )

@@ -2,13 +2,15 @@ package com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.util.Log
+import android.view.*
 import android.widget.TextView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.forEach
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.yuriysurzhikov.autobroker.R
@@ -20,6 +22,11 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     private lateinit var mToolbar: Toolbar
     private lateinit var mToolbarTitle: TextView
     private var mainFragment: Fragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,6 +40,7 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
         super.onViewCreated(view, savedInstanceState)
         mToolbar = view.findViewById(R.id.fragment_toolbar)
         mToolbar.setNavigationOnClickListener { onBackPressed() }
+        mToolbar.inflateMenu(R.menu.empty_menu)
         mToolbarTitle = view.findViewById(R.id.toolbar_title)
         childFragmentManager.addOnBackStackChangedListener(backStackListener)
         goToMain()
@@ -46,12 +54,18 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
                 ft.addToBackStack(tag)
             }
             ft.commit()
-            setToolbarByFragment(fragment)
         }
     }
 
     override fun popBackStack() {
         childFragmentManager.popBackStack()
+    }
+
+    override fun refresh() {
+        val fragment = childFragmentManager.findFragmentById(R.id.content_container)
+        if (fragment is IRefreshableFragment) {
+            fragment.refresh()
+        }
     }
 
     override fun goToMain() {
@@ -61,7 +75,6 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
                 .replace(R.id.content_container, mainFragment!!, MAIN_FRAGMENT_TAG)
                 .addToBackStack(MAIN_FRAGMENT_TAG)
                 .commit()
-            setToolbarByFragment(mainFragment!!)
         }
     }
 
@@ -80,13 +93,18 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     private fun setToolbarByFragment(fragment: Fragment) {
         if (fragment is IStyleFragment) {
             ViewUtils.setVisible(mToolbar)
-            mToolbar.setNavigationIcon(fragment.getNavigationIcon())
+            mToolbar.setNavigationIcon(fragment.getNavigationIcon() ?: getDefaultNavigationIcon())
             mToolbar.backgroundTintList =
                 ColorStateList.valueOf(resources.getColor(fragment.getToolbarColor()))
             mToolbarTitle.text = fragment.getTitle()
         } else if (childFragmentManager.backStackEntryCount == 1) {
             ViewUtils.setGone(mToolbar)
         }
+    }
+
+    @DrawableRes
+    private fun getDefaultNavigationIcon(): Int {
+        return R.drawable.ic_nav_back
     }
 
     private val backStackListener = FragmentManager.OnBackStackChangedListener {
@@ -98,6 +116,10 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
                     R.drawable.ic_nav_back,
                     context?.theme
                 )
+            val fragment = childFragmentManager.findFragmentById(R.id.content_container)
+            fragment?.let {
+                setToolbarByFragment(it)
+            }
         } else {
             setToolbarByFragment(mainFragment!!)
         }
