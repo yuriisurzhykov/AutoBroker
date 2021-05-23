@@ -24,7 +24,7 @@ constructor(
     override fun mapToEntity(domain: CarWithModelsRoom): CarBrand {
         return CarBrand(
             domain.carBrand.id,
-            domain.carBrand.id,
+            domain.carBrand.name,
             domain.carBrand.iconUrl,
             carModelMapper.mapListToEntity(domain.carModels)
         )

@@ -5,34 +5,46 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.ui.list.MutableRecyclerAdapter
+import com.yuriysurzhikov.autobroker.ui.list.OnItemClickListener
 import com.yuriysurzhikov.autobroker.util.ImageUtils
 
-class BottomItemAdapter :
-    MutableRecyclerAdapter<IBottomItem, BottomItemAdapter.BottomItemHolder>() {
+class BottomItemAdapter<T : IBottomItem> :
+    MutableRecyclerAdapter<T, BottomItemAdapter.BottomItemHolder<T>>() {
 
-    class BottomItemHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private var onItemClickListener: OnItemClickListener<T>? = null
+    var listItemRes: Int = R.layout.list_item_bottom_view_item
+
+    class BottomItemHolder<T : IBottomItem>(view: View) : RecyclerView.ViewHolder(view) {
 
         private val title: TextView by lazy { itemView.findViewById<TextView>(android.R.id.text1) }
         private val image: ImageView by lazy { itemView.findViewById<ImageView>(android.R.id.icon) }
 
-        fun bind(item: IBottomItem) {
+        fun bind(
+            item: T,
+            onItemClickListener: OnItemClickListener<T>?
+        ) {
             title.text = item.getTitle()
             ImageUtils.setImageUrl(image, item.getImageUrl())
+            itemView.setOnClickListener {
+                onItemClickListener?.onItemClick(item, adapterPosition)
+            }
         }
 
         companion object {
             @JvmStatic
-            fun instantiate(
+            fun <T : IBottomItem> instantiate(
                 inflater: LayoutInflater,
                 parent: ViewGroup,
-                viewType: Int
-            ): BottomItemHolder {
+                viewType: Int,
+                @LayoutRes itemRes: Int = R.layout.list_item_bottom_view_item
+            ): BottomItemHolder<T> {
                 return BottomItemHolder(
                     inflater.inflate(
-                        R.layout.list_item_bottom_view_item,
+                        itemRes,
                         parent,
                         false
                     )
@@ -41,11 +53,18 @@ class BottomItemAdapter :
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomItemHolder {
-        return BottomItemHolder.instantiate(getLayoutInflater(parent), parent, viewType)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BottomItemHolder<T> {
+        return BottomItemHolder.instantiate(getLayoutInflater(parent), parent, viewType, listItemRes)
     }
 
-    override fun onBindViewHolder(holder: BottomItemHolder, position: Int) {
-        this[position]?.let { holder.bind(it) }
+    override fun onBindViewHolder(holder: BottomItemHolder<T>, position: Int) {
+        this[position]?.let { holder.bind(it, onItemClickListener) }
+    }
+
+    fun setOnClickListener(listener: OnItemClickListener<T>?) {
+        if (listener != null && listener !== onItemClickListener) {
+            onItemClickListener = listener
+            notifyDataSetChanged()
+        }
     }
 }

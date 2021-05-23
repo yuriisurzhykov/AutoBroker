@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.yuriysurzhikov.autobroker.model.events.LogoutEvent
 import com.yuriysurzhikov.autobroker.model.local.CarWithModelsRoom
-import com.yuriysurzhikov.autobroker.repository.local.LocalDatabase
+import com.yuriysurzhikov.autobroker.repository.database.SyncDatabase
 import com.yuriysurzhikov.autobroker.repository.local.UserRepositoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +16,7 @@ class MainActivityViewModel
 @ViewModelInject
 constructor(
     private val localDatabase: UserRepositoryImpl,
-    private val localDB: LocalDatabase
+    private val localDB: SyncDatabase
 ) : ViewModel() {
 
     private val mutableList = MutableLiveData<List<CarWithModelsRoom>>()

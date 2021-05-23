@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -14,8 +15,11 @@ class BottomChooser<T : IBottomItem> : BottomSheetDialogFragment() {
 
     private var onItemClickListener: OnItemClickListener<T>? = null
 
-    private val adapter = BottomItemAdapter()
-    private val items = mutableListOf<IBottomItem>()
+    @LayoutRes
+    private var listItemRes = R.layout.list_item_bottom_view_item
+
+    private val adapter = BottomItemAdapter<T>()
+    private val items = mutableListOf<T>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,13 +34,29 @@ class BottomChooser<T : IBottomItem> : BottomSheetDialogFragment() {
         val recycler = view.findViewById<RecyclerView>(R.id.recycler)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
+        adapter.listItemRes = listItemRes
+        adapter.setOnClickListener(onItemClickListener)
         adapter.setItems(items)
     }
 
     companion object {
-        fun <T : IBottomItem> newInstance(items: List<IBottomItem>) = BottomChooser<T>().apply {
+
+        @JvmStatic
+        @JvmOverloads
+        fun <T : IBottomItem> newInstance(
+            items: List<T>,
+            clickListener: OnItemClickListener<T>? = null,
+            @LayoutRes itemRes: Int = R.layout.list_item_bottom_view_item
+        ) = BottomChooser<T>().apply {
             this.items.clear()
             this.items.addAll(items)
+            this.onItemClickListener = object : OnItemClickListener<T> {
+                override fun onItemClick(item: T, position: Int) {
+                    clickListener?.onItemClick(item, position)
+                    this@apply.dismiss()
+                }
+            }
+            this.listItemRes = itemRes
         }
     }
 }

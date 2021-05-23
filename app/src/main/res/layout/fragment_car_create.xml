@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <variable
+            name="viewModel"
+            type="com.yuriysurzhikov.autobroker.ui.car.CreateCarViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_padding">
+
+            <ImageView
+                android:id="@+id/action_slide_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_left_arrow_light"
+                app:layout_constraintBottom_toBottomOf="@+id/car_brand_pager"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/car_brand_pager" />
+
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/car_brand_pager"
+                android:layout_width="0dp"
+                android:layout_height="150dp"
+                android:maxHeight="@android:dimen/thumbnail_height"
+                app:layout_constraintEnd_toStartOf="@+id/action_slide_right"
+                app:layout_constraintStart_toEndOf="@+id/action_slide_left"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/action_slide_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_right_arrow_light"
+                app:layout_constraintBottom_toBottomOf="@+id/car_brand_pager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/car_brand_pager" />
+
+            <TextView
+                android:id="@+id/car_model"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/small_padding"
+                android:gravity="center"
+                android:text="@{TextUtils.isEmpty(viewModel.selectedModelName) ? @string/label_select_car_model : viewModel.selectedModelName}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/car_brand_pager"
+                tools:text="Click to select car model" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/publish_title_til"
+                style="?textInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_title"
+                app:layout_constraintTop_toBottomOf="@+id/car_model"
+                tools:hint="Title">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/publish_title_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapSentences"
+                    android:text="@{viewModel.adTitle}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/price_til"
+                style="?textInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_price"
+                app:layout_constraintTop_toBottomOf="@+id/publish_title_til"
+                tools:hint="Price">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberSigned"
+                    android:text="@{viewModel.price}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/mileage_til"
+                style="?textInputStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_mileage"
+                app:layout_constraintTop_toBottomOf="@+id/price_til"
+                tools:hint="Mileage">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/mileage_et"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:imeOptions="actionNext"
+                    android:inputType="numberDecimal"
+                    android:text="@{viewModel.mileage}" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/submit_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/default_padding"
+                android:text="@string/btn_submit"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mileage_til"
+                tools:text="Submit" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</layout>

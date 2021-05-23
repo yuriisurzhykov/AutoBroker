@@ -15,8 +15,8 @@ class CarBrandAdapter : MutableRecyclerAdapter<CarBrand, CarBrandAdapter.CarBran
 
     class CarBrandHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        private val name: TextView by lazy { itemView.findViewById<TextView>(R.id.model_name) }
-        private val icon: ImageView by lazy { itemView.findViewById<ImageView>(R.id.model_icon) }
+        private val name: TextView by lazy { itemView.findViewById<TextView>(android.R.id.text1) }
+        private val icon: ImageView by lazy { itemView.findViewById<ImageView>(android.R.id.icon) }
 
         fun bind(item: CarBrand) {
             name.text = item.name

@@ -7,11 +7,11 @@ import javax.inject.Inject
 
 class CarModelLocalMapper @Inject constructor() : IEntityMapper<CarModel, CarModelRoom> {
     override fun mapFromEntity(entity: CarModel): CarModelRoom {
-        return CarModelRoom(entity.id, entity.name, entity.imageSrc, extractCarBrand(entity.id))
+        return CarModelRoom(entity.id, entity.name, entity.imageSrc, entity.carBrandId)
     }
 
     override fun mapToEntity(domain: CarModelRoom): CarModel {
-        return CarModel(domain.id, domain.name, domain.iconUrl)
+        return CarModel(domain.id, domain.name, domain.iconUrl, domain.carBrandId)
     }
 
     override fun mapListFromEntity(entities: List<CarModel>): List<CarModelRoom> {

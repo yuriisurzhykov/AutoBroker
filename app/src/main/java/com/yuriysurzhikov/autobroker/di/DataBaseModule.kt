@@ -2,8 +2,9 @@ package com.yuriysurzhikov.autobroker.di
 
 import android.content.Context
 import androidx.room.Room
+import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import com.yuriysurzhikov.autobroker.repository.local.*
-import com.yuriysurzhikov.autobroker.repository.local.SyncDatabase
+import com.yuriysurzhikov.autobroker.repository.database.SyncDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

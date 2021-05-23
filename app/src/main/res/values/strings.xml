@@ -26,6 +26,7 @@
     <string name="label_city">City</string>
     <string name="label_phone">Phone</string>
     <string name="label_email">Phone</string>
+    <string name="label_select_car_model">Click here, to select the car model</string>
     <string name="error_error_occurred">Error occurred</string>
     <string name="error_field_empty">Required field is empty</string>
     <string name="error_no_such_user">No user with such e-mail or incorrect password!</string>
@@ -34,4 +35,7 @@
     <string name="title_full_details">Full details</string>
     <string name="btn_submit">Submit</string>
     <string name="btn_save_changes">Save changes</string>
+    <string name="hint_title">Title</string>
+    <string name="hint_price">Price</string>
+    <string name="hint_mileage">Mileage</string>
 </resources>

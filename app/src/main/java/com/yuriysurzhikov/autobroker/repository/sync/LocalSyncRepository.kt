@@ -5,8 +5,7 @@ import com.yuriysurzhikov.autobroker.model.entity.FuelType
 import com.yuriysurzhikov.autobroker.model.entity.GearboxType
 import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.local.*
-import com.yuriysurzhikov.autobroker.repository.local.SyncDatabase
-import com.yuriysurzhikov.autobroker.repository.mappers.CarBrandLocalMapper
+import com.yuriysurzhikov.autobroker.repository.database.SyncDatabase
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import javax.inject.Inject
 

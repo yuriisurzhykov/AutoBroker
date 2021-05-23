@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.FragmentHomeBinding
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
+import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
+import com.yuriysurzhikov.autobroker.ui.car.CreateCarFragment
 import com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe.IRefreshableFragment
 
 class FragmentHome : AbstractFragment(), IRefreshableFragment {
@@ -31,6 +33,7 @@ class FragmentHome : AbstractFragment(), IRefreshableFragment {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerAdapter = adapter
         binding.recycler.layoutManager = LinearLayoutManager(context)
+        binding.addRecordAction.setOnClickListener(createCarClickListener)
         viewModel.mutableList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
         })
@@ -42,5 +45,13 @@ class FragmentHome : AbstractFragment(), IRefreshableFragment {
 
     override fun refresh() {
         viewModel.invalidate()
+    }
+
+    private val createCarClickListener = View.OnClickListener {
+        val activity = activity
+        if (activity is INavigationCallbacks) {
+            val fragment = CreateCarFragment.newInstance()
+            activity.showFragment(fragment)
+        }
     }
 }

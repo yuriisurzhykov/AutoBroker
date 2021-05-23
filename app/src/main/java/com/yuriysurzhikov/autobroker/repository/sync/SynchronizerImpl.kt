@@ -82,7 +82,8 @@ constructor(
                 val model = CarModel(
                     modelDoc.id,
                     modelDoc[Const.CarConst.CAR_NAME_FIELD].toString(),
-                    fetchIconUrl(modelDoc)
+                    fetchIconUrl(modelDoc),
+                    document.id
                 )
                 totalModels.add(model)
             }
@@ -96,6 +97,14 @@ constructor(
         }
         localSyncRepository.clearCarBrands()
         localSyncRepository.insertAllCarBrands(totalCarList)
+    }
+
+    override fun syncOnlyUserData() {
+
+    }
+
+    override fun syncOnlyCars() {
+        TODO("Not yet implemented")
     }
 
     private fun fetchIconUrl(document: DocumentSnapshot): String {

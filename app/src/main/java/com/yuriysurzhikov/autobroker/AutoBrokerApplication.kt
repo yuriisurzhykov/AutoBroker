@@ -18,6 +18,10 @@ class AutoBrokerApplication : Application() {
         sync(sSynchronizer)
     }
 
+    fun sync() {
+        sync(sSynchronizer)
+    }
+
     companion object {
         val syncLiveData = SyncLiveData()
         fun sync(synchronizer: ISynchronizer) {

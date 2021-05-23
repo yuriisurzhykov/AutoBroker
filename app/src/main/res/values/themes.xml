@@ -10,10 +10,13 @@
         <item name="colorSecondaryVariant">@color/secondary_color</item>
         <item name="colorOnSecondary">@color/black</item>
 
+        <item name="fontFamily">@font/montserrat</item>
+
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:windowBackground">@color/window_background_color</item>
         <item name="actionBarSize">@dimen/action_bar_size</item>
         <item name="buttonStyle">@style/Theme.AutoBroker.Button</item>
+        <item name="textInputStyle">@style/Theme.AutoBroker.EditText</item>
         <item name="app_statusNoNetwork">@style/Theme.AutoBroker.NoNetworkStyle</item>
         <item name="app_statusSync">@style/Theme.AutoBroker.SyncStyle</item>
         <item name="app_statusProgressIndicator">@style/Theme.AutoBroker.SyncProgressStyle</item>
@@ -63,5 +66,9 @@
         <item name="android:colorAccent">@color/primary_color</item>
         <item name="android:colorPrimary">@color/primary_color</item>
         <item name="android:background">@drawable/button_background</item>
+    </style>
+
+    <style name="Theme.AutoBroker.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:layout_margin">@dimen/small_padding</item>
     </style>
 </resources>

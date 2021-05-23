@@ -7,7 +7,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
-import com.yuriysurzhikov.autobroker.repository.local.LocalDatabase
+import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

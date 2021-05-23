@@ -24,7 +24,6 @@ object ImageUtils {
     fun setImageUrl(view: ImageView, url: String?) {
         Glide.with(view)
             .load(url)
-            .circleCrop()
             .into(view)
     }
 
@@ -35,7 +34,6 @@ object ImageUtils {
     fun setImageUri(view: ImageView, uri: Uri?) {
         Glide.with(view)
             .load(uri)
-            .circleCrop()
             .into(view)
     }
 }

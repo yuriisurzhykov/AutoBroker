@@ -19,11 +19,11 @@ constructor(
     }
 
     override fun mapToEntity(domain: DocumentSnapshot): Car {
-        return Car(domain.id, domain[Const.CarConst.CAR_NAME_FIELD].toString(), "", emptyList())
+        TODO("Not yet implemented")
     }
 
     override fun mapListFromEntity(entities: List<Car>): List<DocumentSnapshot> {
-       return entities.map { mapFromEntity(it) }
+        return entities.map { mapFromEntity(it) }
     }
 
     override fun mapListToEntity(domains: List<DocumentSnapshot>): List<Car> {
