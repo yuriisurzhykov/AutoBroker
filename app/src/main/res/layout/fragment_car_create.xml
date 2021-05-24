@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="android.text.TextUtils" />
 
         <variable
@@ -18,16 +20,31 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/default_padding">
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="10dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="10dp" />
 
             <ImageView
                 android:id="@+id/action_slide_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:enabled="@{!viewModel.loading}"
                 android:src="@drawable/ic_left_arrow_light"
                 app:layout_constraintBottom_toBottomOf="@+id/car_brand_pager"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
                 app:layout_constraintTop_toTopOf="@+id/car_brand_pager" />
 
             <androidx.viewpager2.widget.ViewPager2
@@ -43,9 +60,11 @@
                 android:id="@+id/action_slide_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:enabled="@{!viewModel.loading}"
                 android:src="@drawable/ic_right_arrow_light"
                 app:layout_constraintBottom_toBottomOf="@+id/car_brand_pager"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
                 app:layout_constraintTop_toTopOf="@+id/car_brand_pager" />
 
             <TextView
@@ -53,8 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/small_padding"
+                android:enabled="@{!viewModel.loading}"
                 android:gravity="center"
-                android:text="@{TextUtils.isEmpty(viewModel.selectedModelName) ? @string/label_select_car_model : viewModel.selectedModelName}"
+                android:text="@{(viewModel.selectedModelName == null || TextUtils.isEmpty(viewModel.selectedModelName)) ? @string/label_select_car_model : viewModel.selectedModelName}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -65,66 +85,180 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/publish_title_til"
                 style="?textInputStyle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/car_model"
                 tools:hint="Title">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/publish_title_et"
+                    style="?app_inputTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:enabled="@{!viewModel.loading}"
                     android:imeOptions="actionNext"
                     android:inputType="textCapSentences"
-                    android:text="@{viewModel.adTitle}" />
+                    android:text="@={viewModel.adTitle}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/price_til"
                 style="?textInputStyle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_price"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/publish_title_til"
                 tools:hint="Price">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    style="?app_inputTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:enabled="@{!viewModel.loading}"
                     android:imeOptions="actionNext"
                     android:inputType="numberSigned"
-                    android:text="@{viewModel.price}" />
+                    android:text="@={viewModel.price}" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/mileage_til"
                 style="?textInputStyle"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_mileage"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/price_til"
                 tools:hint="Mileage">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/mileage_et"
+                    style="?app_inputTextStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:enabled="@{!viewModel.loading}"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
-                    android:text="@{viewModel.mileage}" />
+                    android:text="@={viewModel.mileage}" />
             </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/region_code"
+                style="?textInputStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                app:layout_constraintEnd_toStartOf="@+id/number"
+                app:layout_constraintStart_toStartOf="@+id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/mileage_til">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="?app_inputTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_ua_flag"
+                    android:drawablePadding="@dimen/size_6"
+                    android:enabled="@{!viewModel.loading}"
+                    android:gravity="center"
+                    android:hint="@string/label_region_code"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="2"
+                    android:text="@={viewModel.regionCode}"
+                    tools:hint="Code" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/number"
+                style="?textInputStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/region_code"
+                app:layout_constraintEnd_toStartOf="@+id/series"
+                app:layout_constraintStart_toEndOf="@+id/region_code"
+                app:layout_constraintTop_toTopOf="@+id/region_code"
+                app:layout_constraintWidth_percent="0.28">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="?app_inputTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="@{!viewModel.loading}"
+                    android:gravity="center"
+                    android:hint="@string/label_number"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:maxLength="4"
+                    android:text="@={viewModel.number}"
+                    tools:hint="Number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/series"
+                style="?textInputStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@+id/region_code"
+                app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+                app:layout_constraintStart_toEndOf="@+id/number"
+                app:layout_constraintTop_toTopOf="@+id/region_code">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    style="?app_inputTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:enabled="@{!viewModel.loading}"
+                    android:gravity="start|center_vertical"
+                    android:hint="@string/label_serial"
+                    android:imeOptions="actionDone"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="2"
+                    android:text="@={viewModel.serialNumber}"
+                    tools:hint="Serial" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/user_attaches_pager"
+                android:layout_width="0dp"
+                android:layout_height="180dp"
+                android:layout_marginTop="@dimen/default_padding"
+                android:maxHeight="@android:dimen/thumbnail_height"
+                app:layout_constraintEnd_toStartOf="@+id/action_slide_right"
+                app:layout_constraintStart_toEndOf="@+id/action_slide_left"
+                app:layout_constraintTop_toBottomOf="@id/region_code" />
+
+            <Button
+                android:id="@+id/add_more_images"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:enabled="@{!viewModel.loading}"
+                android:padding="@dimen/small_padding"
+                android:text="@{viewModel.userAttachesEmpty ? @string/label_click_pick_to_choose : @string/label_add_more_images}"
+                app:layout_constraintEnd_toEndOf="@+id/user_attaches_pager"
+                app:layout_constraintStart_toStartOf="@+id/user_attaches_pager"
+                app:layout_constraintTop_toBottomOf="@id/user_attaches_pager" />
 
             <Button
                 android:id="@+id/submit_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_padding"
+                android:enabled="@{!viewModel.loading}"
+                android:onClick="@{view -> viewModel.attemptCreate(view)}"
                 android:text="@string/btn_submit"
                 android:textAllCaps="false"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/mileage_til"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                app:layout_constraintStart_toStartOf="@id/guideline_start"
+                app:layout_constraintTop_toBottomOf="@+id/add_more_images"
                 tools:text="Submit" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,4 +9,6 @@ interface IFragmentContainer : IFragmentNavigation, IRefreshableFragment {
     fun setMainFragment(fragment: Fragment)
 
     fun onBackPressed(): Boolean
+
+    fun getBackStackCount(): Int
 }

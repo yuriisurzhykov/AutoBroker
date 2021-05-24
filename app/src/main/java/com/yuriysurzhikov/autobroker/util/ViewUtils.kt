@@ -1,5 +1,6 @@
 package com.yuriysurzhikov.autobroker.util
 
+import android.content.Context
 import android.view.View
 
 object ViewUtils {
@@ -20,5 +21,9 @@ object ViewUtils {
         if (view.visibility != View.GONE) {
             view.visibility = View.GONE
         }
+    }
+
+    fun dpToPx(dp: Int, context: Context): Float {
+        return context.resources.displayMetrics.density * dp
     }
 }

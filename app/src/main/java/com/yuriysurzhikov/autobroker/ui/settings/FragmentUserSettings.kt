@@ -12,7 +12,7 @@ import com.yuriysurzhikov.autobroker.databinding.FragmentUserDetailsBinding
 import com.yuriysurzhikov.autobroker.model.entity.Action
 import com.yuriysurzhikov.autobroker.model.entity.User
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
-import com.yuriysurzhikov.autobroker.ui.navigtor.ActionNavigator
+import com.yuriysurzhikov.autobroker.ui.navigator.ActionNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -5,4 +5,5 @@
     <attr name="app_statusProgressIndicator" format="reference" />
     <attr name="app_singleItemStyle" format="reference" />
     <attr name="app_bottomViewStyle" format="reference" />
+    <attr name="app_inputTextStyle" format="reference" />
 </resources>

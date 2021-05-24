@@ -1,14 +1,20 @@
 package com.yuriysurzhikov.autobroker.repository.local
 
 import android.net.Uri
-import com.yuriysurzhikov.autobroker.model.entity.User
-import com.yuriysurzhikov.autobroker.model.entity.UserLocation
+import com.yuriysurzhikov.autobroker.model.entity.*
+import com.yuriysurzhikov.autobroker.model.local.CarRoom
 import com.yuriysurzhikov.autobroker.model.local.UserLocationRoom
 import com.yuriysurzhikov.autobroker.model.local.UserRoom
 import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
+import com.yuriysurzhikov.autobroker.repository.utils.FormatUtils
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -16,7 +22,8 @@ class UserRepositoryImpl @Inject constructor(
     val localDatabase: LocalDatabase,
     val localMapper: IEntityMapper<User?, UserRoom?>,
     val locationMapper: IEntityMapper<UserLocation?, UserLocationRoom?>,
-    val userRemoteMapper: IEntityMapper<User, Map<String, Any?>>
+    val userRemoteMapper: IEntityMapper<User, Map<String, Any?>>,
+    val carMapper: IEntityMapper<Car, CarRoom>
 ) : IUserLocalRepository {
 
     private val userRepository = localDatabase.getUserRepository()
@@ -120,6 +127,44 @@ class UserRepositoryImpl @Inject constructor(
         if (userRoom != null) {
             localDatabase.getUserRepository().update(userRoom)
             firebaseRepository.updateUser(user)
+        }
+    }
+
+    suspend fun clearAllCars() = withContext(Dispatchers.IO) {
+        localDatabase.getUserCarRepository().clear()
+    }
+
+    suspend fun createCar(car: Car) = withContext(Dispatchers.IO) {
+        localDatabase.getUserCarRepository().add(carMapper.mapFromEntity(car))
+    }
+
+    suspend fun createCar(
+        price: String,
+        title: String,
+        mileage: String,
+        carModel: CarModel,
+        carBrand: CarBrand,
+        carNumber: RegionNumber,
+        images: List<Uri>
+    ) {
+        val user = getMainUser()
+        if (user != null) {
+            val uploadedImages = images.map {
+                firebaseRepository.uploadFile(user.strId, it)
+            }
+            val car = CarRoom(
+                name = title,
+                brandId = carBrand.id,
+                modelId = carModel.id,
+                regionNumber = carNumber,
+                cost = FormatUtils.parseCost(price),
+                mileage = FormatUtils.parseMileage(mileage),
+                description = "Description",
+                carYearIssue = "2020",
+                imagesUri = uploadedImages
+            )
+            localDatabase.getUserCarRepository().add(car)
+            firebaseRepository.createCarForUser(user.strId, carMapper.mapToEntity(car))
         }
     }
 }

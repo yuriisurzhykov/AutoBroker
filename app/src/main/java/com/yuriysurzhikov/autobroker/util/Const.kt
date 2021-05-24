@@ -8,6 +8,18 @@ object Const {
         const val CAR_MODEL_COLLECTION = "models"
         const val CAR_NAME_FIELD = "name"
         const val CAR_MODEL_URI_FIELD = "icon"
+        const val USER_CARS_COLLECTION = "cars_collection"
+
+        const val CAR_ID = "car_id"
+        const val CAR_TITLE = "car_title"
+        const val CAR_YEAR_ISSUE = "car_year_issue"
+        const val CAR_IMAGES_REFS = "car_images_refs"
+        const val CAR_MODEL_ID = "car_model_id"
+        const val CAR_NUMBER = "car_number"
+        const val CAR_BRAND_ID = "car_brand_id"
+        const val CAR_MILEAGE = "car_mileage"
+        const val CAR_DESCRIPTION = "car_description"
+        const val CAR_PRICE = "car_price"
     }
 
     object UserConst {

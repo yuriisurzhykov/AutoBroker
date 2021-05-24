@@ -4,10 +4,14 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.yuriysurzhikov.autobroker.model.entity.*
+import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import com.yuriysurzhikov.autobroker.model.local.CarRoom
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
+import com.yuriysurzhikov.autobroker.repository.local.UserRepositoryImpl
 import com.yuriysurzhikov.autobroker.util.Const
+import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -19,7 +23,9 @@ class SynchronizerImpl
 @Inject
 constructor(
     private val firebaseSyncRepository: FirebaseSyncRepository,
-    private val localSyncRepository: LocalSyncRepository
+    private val localSyncRepository: LocalSyncRepository,
+    private val carMapper: IEntityMapper<Car, Map<String, Any>>,
+    private val userRepositoryImpl: UserRepositoryImpl
 ) : ISynchronizer {
 
     private lateinit var job: Job
@@ -27,14 +33,35 @@ constructor(
     private val TAG = SynchronizerImpl::class.simpleName
 
     @Synchronized
-    override fun performSync() {
-        CoroutineScope(Dispatchers.IO).launch {
-            EventBus.getDefault().post(SyncStartEvent())
-            syncRegions()
-            syncGearBoxTypes()
-            syncFuelTypes()
-            syncCars()
-            EventBus.getDefault().post(SyncSuccessEvent())
+    override fun performSync(userId: String?) {
+        job = CoroutineScope(Dispatchers.IO).launch {
+            try {
+                EventBus.getDefault().post(SyncStartEvent())
+                syncRegions()
+                syncGearBoxTypes()
+                syncFuelTypes()
+                syncCars()
+                syncUserData(userId)
+                EventBus.getDefault().post(SyncSuccessEvent())
+            } catch (e: Throwable) {
+                EventBus.getDefault().post(SyncFailedEvent())
+            }
+        }
+    }
+
+    private suspend fun syncUserData(userId: String?) {
+        if (!userId.isNullOrEmpty()) {
+            val totalList = mutableListOf<Car>()
+            firebaseSyncRepository.fetchUserCars(userId)?.forEach { document ->
+                document.data?.let { docData ->
+                    val car = carMapper.mapToEntity(docData)
+                    totalList.add(car)
+                }
+            }
+            userRepositoryImpl.clearAllCars()
+            totalList.forEach {
+                userRepositoryImpl.createCar(it)
+            }
         }
     }
 

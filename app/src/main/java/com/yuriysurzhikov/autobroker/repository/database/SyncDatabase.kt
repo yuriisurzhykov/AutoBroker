@@ -19,7 +19,7 @@ import com.yuriysurzhikov.autobroker.repository.utils.StringItemConverters
         CarTypeCache::class,
         RegionRoom::class
     ],
-    version = 4,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(StringItemConverters::class)

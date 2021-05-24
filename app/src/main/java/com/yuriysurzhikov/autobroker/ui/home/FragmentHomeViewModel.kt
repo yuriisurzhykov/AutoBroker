@@ -1,5 +1,6 @@
 package com.yuriysurzhikov.autobroker.ui.home
 
+import androidx.databinding.ObservableBoolean
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import com.yuriysurzhikov.autobroker.model.entity.CarBrand
@@ -36,9 +37,9 @@ constructor(
         }
         isLoading.set(true)
         CoroutineScope(Dispatchers.IO).launch {
-            val carWithModel = localDatabase.getCarsDao().getCarBrandWithModels()?.map { mapper.mapToEntity(it) }
+            val carWithModel = localDatabase.getCarsDao().getCarBrandWithModels().map { mapper.mapToEntity(it) }
             mutableList.postValue(carWithModel)
-            isEmpty.set(carWithModel.isNullOrEmpty())
+            isEmpty.set(true)
             isLoading.set(false)
         }
     }

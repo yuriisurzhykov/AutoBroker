@@ -44,11 +44,14 @@ class SwipeFragmentNavigation {
 
     fun showFragment(fragment: Fragment, tag: String? = fragment.toString()) {
         mCurrentFragmentContainer?.addFragment(fragment, tag)
+        //onBackStackChanged()
     }
 
     fun onBackPressed(): Boolean {
         return if (mCurrentFragmentContainer != null) {
-            mCurrentFragmentContainer!!.onBackPressed()
+            val changed = mCurrentFragmentContainer!!.onBackPressed()
+            //onBackStackChanged()
+            changed
         } else {
             false
         }
@@ -56,6 +59,13 @@ class SwipeFragmentNavigation {
 
     fun refresh() {
         mCurrentFragmentContainer?.refresh()
+    }
+
+    private fun onBackStackChanged() {
+        if (mCurrentFragmentContainer != null)
+            mViewPager2.isUserInputEnabled = mCurrentFragmentContainer!!.getBackStackCount() <= 1
+        else
+            mViewPager2.isUserInputEnabled = true
     }
 
     class Builder {
@@ -90,8 +100,13 @@ class SwipeFragmentNavigation {
             mSwipeNavigation.idsIndexed.clear()
             mSwipeNavigation.mBottomNavView.menu.forEachIndexed { index, item ->
                 mSwipeNavigation.idsIndexed[index] = item.itemId
-                mSwipeNavigation.mFragmentContainers[item.itemId] =
-                    mSwipeNavigation.mPagerAdapter.get(index)
+                val fragmentContainer = mSwipeNavigation.mPagerAdapter.get(index)
+                fragmentContainer.onBackStackChangeListener =
+                    FragmentManager.OnBackStackChangedListener {
+                        mSwipeNavigation.onBackStackChanged()
+                    }
+                mSwipeNavigation.mFragmentContainers[item.itemId] = fragmentContainer
+
             }
             return this
         }
@@ -107,11 +122,9 @@ class SwipeFragmentNavigation {
         }
 
         fun build(): SwipeFragmentNavigation {
-            if (mSwipeNavigation::mBottomNavView.isInitialized && mSwipeNavigation::mViewPager2.isInitialized)
+            if (mSwipeNavigation::mBottomNavView.isInitialized && mSwipeNavigation::mViewPager2.isInitialized) {
                 return mSwipeNavigation
-            else throw RuntimeException("You must to provide BottomNavigationView and ViewPager2 for build SwipeFragmentNavigation")
+            } else throw RuntimeException("You must to provide BottomNavigationView and ViewPager2 for build SwipeFragmentNavigation")
         }
-
     }
-
 }

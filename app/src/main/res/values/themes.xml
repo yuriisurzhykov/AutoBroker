@@ -21,6 +21,7 @@
         <item name="app_statusSync">@style/Theme.AutoBroker.SyncStyle</item>
         <item name="app_statusProgressIndicator">@style/Theme.AutoBroker.SyncProgressStyle</item>
         <item name="app_bottomViewStyle">@style/Theme.AutoBroker.BottomViewStyle</item>
+        <item name="app_inputTextStyle">@style/Theme.AutoBroker.InputTextStyle</item>
     </style>
 
     <style name="StatusBar">
@@ -68,7 +69,15 @@
         <item name="android:background">@drawable/button_background</item>
     </style>
 
+    <style name="Theme.AppCompat.Button.Borderless" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="colorAccent">@color/primary_color</item>
+    </style>
+
     <style name="Theme.AutoBroker.EditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="android:layout_margin">@dimen/small_padding</item>
+    </style>
+
+    <style name="Theme.AutoBroker.InputTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:padding">13dp</item>
     </style>
 </resources>

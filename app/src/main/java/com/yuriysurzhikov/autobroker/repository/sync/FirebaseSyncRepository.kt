@@ -36,4 +36,12 @@ class FirebaseSyncRepository {
             .collection(Const.CarConst.CAR_MODEL_COLLECTION).get()
         return Tasks.await(task)?.documents
     }
+
+    suspend fun fetchUserCars(userId: String): List<DocumentSnapshot>? {
+        val task = database
+            .collection(Const.UserConst.USER_COLLECTION)
+            .document(userId)
+            .collection(Const.CarConst.USER_CARS_COLLECTION).get()
+        return Tasks.await(task)?.documents
+    }
 }

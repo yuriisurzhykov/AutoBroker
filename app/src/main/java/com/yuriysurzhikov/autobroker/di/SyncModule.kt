@@ -1,19 +1,14 @@
 package com.yuriysurzhikov.autobroker.di
 
-import com.yuriysurzhikov.autobroker.model.entity.CarBrand
-import com.yuriysurzhikov.autobroker.model.entity.FuelType
-import com.yuriysurzhikov.autobroker.model.entity.GearboxType
-import com.yuriysurzhikov.autobroker.model.entity.Region
-import com.yuriysurzhikov.autobroker.model.local.CarWithModelsRoom
-import com.yuriysurzhikov.autobroker.model.local.FuelTypeCache
-import com.yuriysurzhikov.autobroker.model.local.GearboxTypeCache
-import com.yuriysurzhikov.autobroker.model.local.RegionRoom
+import com.yuriysurzhikov.autobroker.model.entity.*
+import com.yuriysurzhikov.autobroker.model.local.*
 import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.repository.core.IUserLocalRepository
 import com.yuriysurzhikov.autobroker.repository.sync.SynchronizerImpl
 import com.yuriysurzhikov.autobroker.repository.sync.FirebaseSyncRepository
 import com.yuriysurzhikov.autobroker.repository.sync.LocalSyncRepository
 import com.yuriysurzhikov.autobroker.repository.database.SyncDatabase
+import com.yuriysurzhikov.autobroker.repository.local.UserRepositoryImpl
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
@@ -56,11 +51,15 @@ object SyncModule {
         userRepositoryFirebase: UserFirebaseRepository,
         userRepositoryLocal: IUserLocalRepository,
         firebaseSyncRepository: FirebaseSyncRepository,
-        localSyncRepository: LocalSyncRepository
+        localSyncRepository: LocalSyncRepository,
+        carMapper: IEntityMapper<Car, Map<String, Any>>,
+        userRepositoryImpl: UserRepositoryImpl
     ): ISynchronizer {
         return SynchronizerImpl(
             firebaseSyncRepository,
-            localSyncRepository
+            localSyncRepository,
+            carMapper,
+            userRepositoryImpl
         )
     }
 }

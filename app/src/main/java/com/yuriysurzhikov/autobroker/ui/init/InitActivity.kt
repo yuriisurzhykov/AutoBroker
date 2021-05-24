@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
+import com.yuriysurzhikov.autobroker.AutoBrokerApplication
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
@@ -11,6 +12,7 @@ import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.ui.AbstractActivity
 import com.yuriysurzhikov.autobroker.ui.login.LoginActivity
 import com.yuriysurzhikov.autobroker.ui.main.MainActivity
+import com.yuriysurzhikov.autobroker.util.DataUtils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,9 +21,8 @@ class InitActivity : AbstractActivity() {
     private val TAG = InitActivity::class.simpleName
 
     private val viewModel: InitActivityViewModel by viewModels()
+
     override fun getLayoutRes() = R.layout.activity_splash_layout
-    private var userLoginStatus: Int? = null
-    private var syncComplete = false
 
     override fun onCreated(savedInstanceState: Bundle?) {
         viewModel.setLoggingObserver(this, userLoggingObserver)
@@ -45,7 +46,10 @@ class InitActivity : AbstractActivity() {
 
     private fun performLogin(loginStatus: Int) {
         when (loginStatus) {
-            ErrorCode.OK -> openMainScreen()
+            ErrorCode.OK -> {
+                (application as AutoBrokerApplication).syncUser(viewModel.user!!.userId)
+                openMainScreen()
+            }
             ErrorCode.ERROR_ON_BOARDING_NEEDED -> openLoginScreen(Bundle().apply {
                 putBoolean(LoginActivity.ARG_OPEN_ON_BOARDING, true)
             })

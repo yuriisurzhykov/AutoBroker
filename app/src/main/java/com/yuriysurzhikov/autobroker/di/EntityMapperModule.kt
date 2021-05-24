@@ -7,7 +7,9 @@ import com.yuriysurzhikov.autobroker.model.local.*
 import com.yuriysurzhikov.autobroker.repository.local.UserLocalDao
 import com.yuriysurzhikov.autobroker.repository.mappers.*
 import com.yuriysurzhikov.autobroker.repository.sync.FirebaseSyncRepository
+import com.yuriysurzhikov.autobroker.repository.utils.ImagesListConverter
 import com.yuriysurzhikov.autobroker.repository.utils.LocationConverter
+import com.yuriysurzhikov.autobroker.repository.utils.RegionNumberConverter
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
 import dagger.Module
 import dagger.Provides
@@ -67,15 +69,6 @@ object EntityMapperModule {
 
     @Provides
     @Singleton
-    fun provideCarFirebaseMapper(
-        modelMapper: IEntityMapper<CarModel, DocumentSnapshot>,
-        firebaseSyncRepository: FirebaseSyncRepository
-    ): IEntityMapper<Car, DocumentSnapshot> {
-        return FirebaseCarMapper(modelMapper, firebaseSyncRepository)
-    }
-
-    @Provides
-    @Singleton
     fun provideCarBrandLocalMapper(modelMapper: IEntityMapper<CarModel, CarModelRoom>): IEntityMapper<CarBrand, CarWithModelsRoom> {
         return CarBrandLocalMapper(modelMapper)
     }
@@ -84,5 +77,20 @@ object EntityMapperModule {
     @Singleton
     fun provideCarModelLocalMapper(): IEntityMapper<CarModel, CarModelRoom> {
         return CarModelLocalMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCarLocalMapper(): IEntityMapper<Car, CarRoom> {
+        return CarMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideCarFirebaseMapper(
+        regionNumberConverter: RegionNumberConverter,
+        imagesListConverter: ImagesListConverter
+    ): IEntityMapper<Car, Map<String, Any>> {
+        return CarRemoteMapper(regionNumberConverter, imagesListConverter)
     }
 }

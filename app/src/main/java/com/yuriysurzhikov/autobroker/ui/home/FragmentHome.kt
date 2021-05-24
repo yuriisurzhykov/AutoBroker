@@ -24,16 +24,18 @@ class FragmentHome : AbstractFragment(), IRefreshableFragment {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
         binding.recyclerAdapter = adapter
         binding.recycler.layoutManager = LinearLayoutManager(context)
         binding.addRecordAction.setOnClickListener(createCarClickListener)
+        binding.createButton.setOnClickListener(createCarClickListener)
         viewModel.mutableList.observe(viewLifecycleOwner, Observer {
             adapter.setItems(it)
         })

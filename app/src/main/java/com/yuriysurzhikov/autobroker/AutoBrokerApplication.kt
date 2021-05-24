@@ -22,10 +22,14 @@ class AutoBrokerApplication : Application() {
         sync(sSynchronizer)
     }
 
+    fun syncUser(userId: String) {
+        sync(sSynchronizer, userId)
+    }
+
     companion object {
         val syncLiveData = SyncLiveData()
-        fun sync(synchronizer: ISynchronizer) {
-            synchronizer.performSync()
+        fun sync(synchronizer: ISynchronizer, userId: String? = null) {
+            synchronizer.performSync(userId)
         }
     }
 }

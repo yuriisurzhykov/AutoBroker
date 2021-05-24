@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.yuriysurzhikov.autobroker.model.entity.User
+import com.yuriysurzhikov.autobroker.model.local.UserRoom
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,7 @@ class InitActivityViewModel @ViewModelInject constructor(
 
     private val mUserLoggedStatus = MutableLiveData<Int>()
     private val firebaseAuth = FirebaseAuth.getInstance()
+    var user: UserRoom? = null
 
     fun setLoggingObserver(owner: LifecycleOwner, observer: Observer<Int>) {
         mUserLoggedStatus.observe(owner, observer)
@@ -25,11 +28,11 @@ class InitActivityViewModel @ViewModelInject constructor(
 
     fun checkUserSignIn() {
         CoroutineScope(Dispatchers.IO).launch {
-            val user = localDatabase.getUserRepository().getFirstUser()
+            user = localDatabase.getUserRepository().getFirstUser()
             val resultCode =
                 if (user == null) ErrorCode.ERROR_NO_SUCH_USER
-                else if (!user.fullRegistration) ErrorCode.ERROR_ON_BOARDING_NEEDED
-                else if (!user.isLogged) ErrorCode.LOGIN_NEEDED
+                else if (!user!!.fullRegistration) ErrorCode.ERROR_ON_BOARDING_NEEDED
+                else if (!user!!.isLogged) ErrorCode.LOGIN_NEEDED
                 else ErrorCode.OK
             mUserLoggedStatus.postValue(resultCode)
         }

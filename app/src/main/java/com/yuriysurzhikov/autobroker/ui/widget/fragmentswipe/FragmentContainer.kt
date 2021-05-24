@@ -1,5 +1,6 @@
 package com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe
 
+import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -22,10 +23,25 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     private lateinit var mToolbar: Toolbar
     private lateinit var mToolbarTitle: TextView
     private var mainFragment: Fragment? = null
+    var onBackStackChangeListener: FragmentManager.OnBackStackChangedListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (onBackStackChangeListener != null) {
+            childFragmentManager.addOnBackStackChangedListener(onBackStackChangeListener!!)
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        if (onBackStackChangeListener != null) {
+            childFragmentManager.removeOnBackStackChangedListener(onBackStackChangeListener!!)
+        }
     }
 
     override fun onCreateView(
@@ -70,7 +86,7 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
 
     override fun goToMain() {
         if (mainFragment != null) {
-            childFragmentManager.popBackStack(0, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
             childFragmentManager.beginTransaction()
                 .replace(R.id.content_container, mainFragment!!, MAIN_FRAGMENT_TAG)
                 .addToBackStack(MAIN_FRAGMENT_TAG)
@@ -88,6 +104,10 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
             return true
         }
         return false
+    }
+
+    override fun getBackStackCount(): Int {
+        return childFragmentManager.backStackEntryCount
     }
 
     private fun setToolbarByFragment(fragment: Fragment) {

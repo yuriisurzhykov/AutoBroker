@@ -38,4 +38,15 @@
     <string name="hint_title">Title</string>
     <string name="hint_price">Price</string>
     <string name="hint_mileage">Mileage</string>
+    <string name="label_add_more_images">Add more images</string>
+    <string name="label_click_pick_to_choose">Click on picture to choose image</string>
+    <string name="label_action_pick_image">Select image</string>
+    <string name="label_region_code">Code</string>
+    <string name="label_number">Number</string>
+    <string name="label_serial">Serial</string>
+    <string name="error_region_code_invalid">Code is invalid</string>
+    <string name="error_number_invalid">Number is invalid</string>
+    <string name="msg_select_model">Please select the car model!</string>
+    <string name="msg_no_car_added">You don\'t have a single car yet.</string>
+    <string name="btn_lets_create">Lets create!</string>
 </resources>

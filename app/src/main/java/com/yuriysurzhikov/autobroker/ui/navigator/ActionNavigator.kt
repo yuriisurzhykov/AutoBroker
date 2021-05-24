@@ -1,4 +1,4 @@
-package com.yuriysurzhikov.autobroker.ui.navigtor
+package com.yuriysurzhikov.autobroker.ui.navigator
 
 import android.content.Context
 import androidx.fragment.app.Fragment
