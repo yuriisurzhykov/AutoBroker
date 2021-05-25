@@ -52,7 +52,7 @@ class LoginActivity :
         openFragment(fragment, "on-boarding_fragment")
     }
 
-    override fun onLoginSuccess() {
+    override fun onLoginSuccess(userId: String) {
         AutoBrokerApplication.sync(synchronizer)
         Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

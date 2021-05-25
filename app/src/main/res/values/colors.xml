@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ocean_blue">#040738</color>
+    <color name="light_briz">#4D87B6</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="white_transparent">#66FFFFFF</color>
@@ -19,8 +20,9 @@
     <color name="secondary_color_disabled">#D66565</color>
     <color name="secondary_text_color">@color/color_on_secondary</color>
     <color name="color_on_secondary">@color/white</color>
+    <color name="color_text_input_light">#E3EAEF</color>
 
-    <color name="sync_color">#4D87B6</color>
+    <color name="sync_color">@color/light_briz</color>
     <color name="error_color">@color/red</color>
     <color name="accept_color">@color/green</color>
     <color name="no_network_color">@color/red_second_variant</color>

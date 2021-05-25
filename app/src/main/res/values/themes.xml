@@ -22,6 +22,7 @@
         <item name="app_statusProgressIndicator">@style/Theme.AutoBroker.SyncProgressStyle</item>
         <item name="app_bottomViewStyle">@style/Theme.AutoBroker.BottomViewStyle</item>
         <item name="app_inputTextStyle">@style/Theme.AutoBroker.InputTextStyle</item>
+        <item name="app_loginFormInput">@style/Theme.AutoBroker.LoginTextInput</item>
     </style>
 
     <style name="StatusBar">
@@ -77,7 +78,12 @@
         <item name="android:layout_margin">@dimen/small_padding</item>
     </style>
 
-    <style name="Theme.AutoBroker.InputTextStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="Theme.AutoBroker.InputTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:padding">13dp</item>
+    </style>
+
+    <style name="Theme.AutoBroker.LoginTextInput" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@drawable/edit_text_colored_background</item>
+        <item name="android:paddingTop">@dimen/floating_hint_padding</item>
     </style>
 </resources>

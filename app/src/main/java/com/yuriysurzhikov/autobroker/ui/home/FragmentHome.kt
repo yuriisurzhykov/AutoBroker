@@ -18,7 +18,7 @@ class FragmentHome : AbstractFragment(), IRefreshableFragment {
 
     private val viewModel: FragmentHomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
-    private val adapter = CarBrandAdapter()
+    private val adapter = CarsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -12,7 +12,9 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.model.events.SyncFailedEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncStartEvent
 import com.yuriysurzhikov.autobroker.model.events.SyncSuccessEvent
+import com.yuriysurzhikov.autobroker.repository.sync.ConnectivityLiveData
 import com.yuriysurzhikov.autobroker.repository.sync.SyncData
+import com.yuriysurzhikov.autobroker.repository.sync.SyncLiveData
 import com.yuriysurzhikov.autobroker.util.ViewUtils
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -32,7 +34,7 @@ abstract class AbstractActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_abstract)
-        AutoBrokerApplication.syncLiveData.observe(this, syncObserver)
+        SyncLiveData.instance.observe(this, syncObserver)
         syncView = findViewById(R.id.synchronization)
         noNetwork = findViewById(R.id.no_network)
         val contentStub: ViewStub = findViewById(R.id.content_stub)
@@ -41,6 +43,13 @@ abstract class AbstractActivity : AppCompatActivity() {
             onCreated(savedInstanceState)
         }
         contentStub.inflate()
+        ConnectivityLiveData.getInstance().observe(this, Observer {
+            if (it?.isOnline == true) {
+                onConnectionRestore()
+            } else {
+                onConnectionLost()
+            }
+        })
     }
 
     override fun onStart() {
@@ -71,8 +80,18 @@ abstract class AbstractActivity : AppCompatActivity() {
         ViewUtils.setGone(syncView)
     }
 
+    @CallSuper
+    protected open fun onConnectionLost() {
+        ViewUtils.setVisible(noNetwork)
+    }
+
+    @CallSuper
+    protected open fun onConnectionRestore() {
+        ViewUtils.setGone(noNetwork)
+    }
+
     private val syncObserver = Observer<SyncData> {
-        when(it?.event) {
+        when (it?.event) {
             is SyncStartEvent -> onSyncStarted(it.event as SyncStartEvent)
             is SyncSuccessEvent -> onSyncSuccess(it.event as SyncSuccessEvent)
             is SyncFailedEvent -> onSyncFailed(it.event as SyncFailedEvent)

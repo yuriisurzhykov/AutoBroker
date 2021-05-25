@@ -7,5 +7,6 @@ interface INavigationCallbacks {
     fun showFragment(fragment: Fragment, tag: String? = fragment.toString())
     fun openIntent(intent: Intent)
     fun attemptLogout()
+    fun backToMain()
     fun onEmptyBackStack()
 }

@@ -8,11 +8,13 @@
     <dimen name="size_8">8dp</dimen>
     <dimen name="small_padding">10dp</dimen>
     <dimen name="default_padding">20dp</dimen>
+    <dimen name="large_padding">28dp</dimen>
     <dimen name="action_bar_size">80dp</dimen>
     <dimen name="profile_image_size">90dp</dimen>
     <dimen name="default_list_item_size">60dp</dimen>
     <dimen name="default_action_icon_size">40dp</dimen>
     <dimen name="default_corner_radius">12dp</dimen>
+    <dimen name="floating_hint_padding">@dimen/default_padding</dimen>
 
     <!--Text dimens-->
     <dimen name="title_min_text_size">12sp</dimen>
@@ -21,4 +23,6 @@
     <!--Image dimens-->
     <dimen name="min_icon_size">35dp</dimen>
     <dimen name="max_icon_size">65dp</dimen>
+    <dimen name="max_list_pager_height">150dp</dimen>
+    <dimen name="min_list_pager_height">75dp</dimen>
 </resources>

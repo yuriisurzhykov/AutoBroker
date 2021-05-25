@@ -61,6 +61,10 @@ class SwipeFragmentNavigation {
         mCurrentFragmentContainer?.refresh()
     }
 
+    fun backToMain() {
+        mCurrentFragmentContainer?.goToMain()
+    }
+
     private fun onBackStackChanged() {
         if (mCurrentFragmentContainer != null)
             mViewPager2.isUserInputEnabled = mCurrentFragmentContainer!!.getBackStackCount() <= 1

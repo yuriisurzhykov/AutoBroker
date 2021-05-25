@@ -9,6 +9,7 @@ import android.widget.Spinner
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 
 
 @BindingAdapter("photoUri")
@@ -31,4 +32,10 @@ fun setTextWatcher(view: EditText, watcher: TextWatcher?) {
 @BindingAdapter("recyclerAdapter")
 fun setRecyclerAdapter(view: RecyclerView, adapter: RecyclerView.Adapter<*>?) {
     view.adapter = adapter
+}
+
+@BindingAdapter("error")
+fun setError(til: TextInputLayout, error: String?) {
+    til.isErrorEnabled = error.isNotNullOrEmpty()
+    til.error = error
 }

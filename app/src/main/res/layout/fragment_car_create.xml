@@ -16,7 +16,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/default_padding"
+        android:layout_marginBottom="@dimen/default_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -88,6 +90,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_title"
+                app:error="@{viewModel.adTitleError}"
                 app:layout_constraintEnd_toEndOf="@+id/guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/car_model"
@@ -110,6 +113,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_price"
+                app:error="@{viewModel.priceError}"
                 app:layout_constraintEnd_toEndOf="@+id/guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/publish_title_til"
@@ -131,6 +135,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_mileage"
+                app:error="@{viewModel.mileageError}"
                 app:layout_constraintEnd_toEndOf="@+id/guideline_end"
                 app:layout_constraintStart_toStartOf="@+id/guideline_start"
                 app:layout_constraintTop_toBottomOf="@+id/price_til"
@@ -248,9 +253,11 @@
 
             <Button
                 android:id="@+id/submit_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/default_padding"
+                android:layout_marginBottom="@dimen/default_padding"
+                android:background="@drawable/login_gradient_button"
                 android:enabled="@{!viewModel.loading}"
                 android:onClick="@{view -> viewModel.attemptCreate(view)}"
                 android:text="@string/btn_submit"

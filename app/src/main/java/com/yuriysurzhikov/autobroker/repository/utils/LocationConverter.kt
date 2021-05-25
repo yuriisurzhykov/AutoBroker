@@ -7,12 +7,12 @@ import javax.inject.Inject
 class LocationConverter @Inject constructor() {
     @TypeConverter
     fun convertFromLocation(location: UserLocation): String {
-        return "${location.city}|${location.region}"
+        return "${location.city}|${location.regionName}|${location.regionId}"
     }
 
     @TypeConverter
     fun convertToLocation(string: String): UserLocation {
         val splited = string.split("|")
-        return UserLocation(splited[0], splited[1])
+        return UserLocation(splited[0], splited[1], splited[2])
     }
 }

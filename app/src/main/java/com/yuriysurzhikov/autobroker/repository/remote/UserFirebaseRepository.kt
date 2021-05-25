@@ -30,8 +30,11 @@ constructor(
     private val firestore = Firebase.firestore
 
     suspend fun getUser(id: String?): User? {
+        if (id.isNullOrEmpty()) {
+            return null
+        }
         val userTask = firestore.collection(Const.UserConst.USER_COLLECTION)
-            .document(id ?: "")
+            .document(id)
             .get()
         val value = Tasks.await(userTask)
         if (value != null && value.data != null) {
@@ -62,16 +65,20 @@ constructor(
         updateUser(user)
     }
 
-    override suspend fun createCarForUser(userId: String, carRoom: Car): Unit =
+    override suspend fun createCarForUser(userId: String, carRoom: Car): String? =
         withContext(Dispatchers.IO) {
-            val entity = carMapper.mapFromEntity(carRoom)
-            firestore
-                .collection(Const.UserConst.USER_COLLECTION)
-                .document(userId)
-                .collection(Const.CarConst.USER_CARS_COLLECTION)
-                .document(carRoom.id)
-                .set(entity, SetOptions.merge())
-            return@withContext
+            try {
+                val entity = carMapper.mapFromEntity(carRoom)
+                firestore
+                    .collection(Const.UserConst.USER_COLLECTION)
+                    .document(userId)
+                    .collection(Const.CarConst.USER_CARS_COLLECTION)
+                    .document(carRoom.id)
+                    .set(entity, SetOptions.merge())
+                return@withContext carRoom.id
+            } catch (e: Throwable) {
+                return@withContext null
+            }
         }
 
     override suspend fun uploadFile(userId: String, stringUri: Uri): String {

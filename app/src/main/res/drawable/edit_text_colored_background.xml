@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:top="@dimen/floating_hint_padding">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/default_corner_radius" />
+            <solid android:color="@color/color_text_input_light" />
+        </shape>
+    </item>
+
+    <item android:state_focused="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="@dimen/default_corner_radius" />
+            <solid android:color="@color/color_on_secondary" />
+        </shape>
+    </item>
+</selector>

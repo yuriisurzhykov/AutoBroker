@@ -1,6 +1,5 @@
 package com.yuriysurzhikov.autobroker.ui.login
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,6 @@ import com.yuriysurzhikov.autobroker.model.entity.Region
 import com.yuriysurzhikov.autobroker.model.entity.StringItem
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.ui.widget.adapters.RegionAdapter
-import com.yuriysurzhikov.autobroker.ui.main.MainActivity
 import com.yuriysurzhikov.autobroker.util.isNotNullOrEmpty
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +27,7 @@ class UserDataFragment : AbstractLoginFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRegistrationUserDataBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,7 +46,7 @@ class UserDataFragment : AbstractLoginFragment() {
     private fun attemptRegistration() {
         if (checkAllField()) {
             val region = binding.regionAdapter?.getItem(viewModel.selectedRegionPosition.get())
-            viewModel.attemptRegistration(region, binding.cityInput.toString())
+            viewModel.attemptRegistration(region, binding.cityInput.text.toString())
         }
     }
 
@@ -79,11 +77,9 @@ class UserDataFragment : AbstractLoginFragment() {
     private val registrationObserver = Observer<Int> {
         when (it) {
             ErrorCode.OK -> {
-                Intent(activity, MainActivity::class.java).apply {
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                }.also {
-                    startActivity(it)
+                val activity = activity
+                if (activity is ILoginCallback) {
+                    viewModel.user.get()?.strId?.let { it1 -> activity.onLoginSuccess(it1) }
                 }
             }
             ErrorCode.ERROR_UNKNOWN -> {

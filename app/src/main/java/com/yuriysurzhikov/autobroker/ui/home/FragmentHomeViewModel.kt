@@ -3,7 +3,10 @@ package com.yuriysurzhikov.autobroker.ui.home
 import androidx.databinding.ObservableBoolean
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.yuriysurzhikov.autobroker.model.entity.Car
 import com.yuriysurzhikov.autobroker.model.entity.CarBrand
+import com.yuriysurzhikov.autobroker.model.local.CarRoom
 import com.yuriysurzhikov.autobroker.model.local.CarWithModelsRoom
 import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import com.yuriysurzhikov.autobroker.repository.database.SyncDatabase
@@ -18,10 +21,11 @@ class FragmentHomeViewModel
 constructor(
     private val localDatabase: SyncDatabase,
     private val userDatabase: LocalDatabase,
-    private val mapper: IEntityMapper<CarBrand, CarWithModelsRoom>
+    private val mapper: IEntityMapper<CarBrand, CarWithModelsRoom>,
+    private val carMapper: IEntityMapper<Car, CarRoom>
 ) : BaseViewModel() {
 
-    val mutableList = MutableLiveData<List<CarBrand>>()
+    val mutableList = MutableLiveData<List<Car>>()
 
     init {
         load()
@@ -37,9 +41,11 @@ constructor(
         }
         isLoading.set(true)
         CoroutineScope(Dispatchers.IO).launch {
-            val carWithModel = localDatabase.getCarsDao().getCarBrandWithModels().map { mapper.mapToEntity(it) }
-            mutableList.postValue(carWithModel)
-            isEmpty.set(true)
+            val userCars = userDatabase.getUserCarRepository().getAll().map {
+                carMapper.mapToEntity(it)
+            }
+            mutableList.postValue(userCars)
+            isEmpty.set(userCars.isEmpty())
             isLoading.set(false)
         }
     }

@@ -9,7 +9,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
-class SyncLiveData : LiveData<SyncData>() {
+class SyncLiveData private constructor() : LiveData<SyncData>() {
 
     private val TAG = SyncLiveData::class.simpleName
 
@@ -39,5 +39,9 @@ class SyncLiveData : LiveData<SyncData>() {
     fun onSyncStarted(event: SyncStartEvent) {
         Log.e(TAG, "onSyncStarted: $event")
         postValue(SyncData(syncStatus = 1, isSyncing = true, event = event))
+    }
+
+    companion object {
+        val instance = SyncLiveData()
     }
 }

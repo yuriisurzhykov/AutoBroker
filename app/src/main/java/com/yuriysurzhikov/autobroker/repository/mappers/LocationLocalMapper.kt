@@ -7,13 +7,13 @@ import com.yuriysurzhikov.autobroker.util.IEntityMapper
 class LocationLocalMapper : IEntityMapper<UserLocation?, UserLocationRoom?> {
     override fun mapFromEntity(entity: UserLocation?): UserLocationRoom? {
         return if (entity != null) {
-            UserLocationRoom(0, entity.city, entity.region)
+            UserLocationRoom(0, entity.city, entity.regionId, entity.regionName)
         } else null
     }
 
     override fun mapToEntity(domain: UserLocationRoom?): UserLocation? {
         return if (domain != null) {
-            UserLocation(domain.city, domain.region)
+            UserLocation(domain.city, domain.regionName, domain.regionId)
         } else null
     }
 

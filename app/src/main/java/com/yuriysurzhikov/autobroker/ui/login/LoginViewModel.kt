@@ -33,6 +33,7 @@ constructor(
     val userCity = ObservableField<String>()
     val loading = ObservableBoolean(false)
     val selectedRegionPosition = ObservableInt()
+    val user = ObservableField<User>()
 
     fun observeResult(owner: LifecycleOwner, observer: Observer<Pair<Int, Boolean>>) {
         loginCode.observe(owner, observer)
@@ -97,9 +98,11 @@ constructor(
             if (region != null && city != null) {
                 try {
                     val user = localLocalRepository.getMainUser()
-                    user?.location = UserLocation(city, region.externalId)
+                    user?.location =
+                        UserLocation(city, region.localizations[0].value ?: "", region.externalId)
                     user?.isLoggedIn = true
                     user?.fullRegistration = true
+                    this@LoginViewModel.user.set(user)
                     localLocalRepository.register(user!!)
                     registrationCode.postValue(ErrorCode.OK)
                 } catch (e: Throwable) {

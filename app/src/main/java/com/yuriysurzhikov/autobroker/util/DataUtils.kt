@@ -10,15 +10,17 @@ object DataUtils {
 
     @JvmStatic
     fun isFirstOpening(context: Context): Boolean {
+        val availableContext = context.applicationContext
         val sharedPreferences =
-            context.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+            availableContext.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         return !sharedPreferences.getBoolean(ARG_WAS_FIRST_LAUNCH, false)
     }
 
     @JvmStatic
     fun writeWasFirstLaunch(context: Context) {
+        val availableContext = context.applicationContext
         val sharedPreferences =
-            context.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
+            availableContext.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE)
         sharedPreferences.edit()
             .putBoolean(ARG_WAS_FIRST_LAUNCH, true)
             .apply()

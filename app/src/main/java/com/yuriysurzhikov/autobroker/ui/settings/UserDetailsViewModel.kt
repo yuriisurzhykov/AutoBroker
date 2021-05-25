@@ -74,7 +74,7 @@ constructor(
             val context = app.applicationContext
             val details = mutableListOf<StringItem>()
             val user = repository.getMainUser()
-            details.add(StringItem(context.getString(R.string.label_region), user?.location?.region))
+            details.add(StringItem(context.getString(R.string.label_region), user?.location?.regionName))
             details.add(StringItem(context.getString(R.string.label_city), user?.location?.city))
             details.add(StringItem(context.getString(R.string.label_email), user?.email))
             details.add(StringItem(context.getString(R.string.label_phone), user?.phone))

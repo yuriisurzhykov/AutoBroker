@@ -11,5 +11,5 @@ interface IUserRepository {
     suspend fun login(user: User)
     suspend fun logout(user: User)
     suspend fun uploadFile(userId: String, stringUri: Uri): String
-    suspend fun createCarForUser(userId: String, carRoom: Car)
+    suspend fun createCarForUser(userId: String, carRoom: Car): String?
 }

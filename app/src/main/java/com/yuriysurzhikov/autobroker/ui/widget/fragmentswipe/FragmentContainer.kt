@@ -107,7 +107,11 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     }
 
     override fun getBackStackCount(): Int {
-        return childFragmentManager.backStackEntryCount
+        return try {
+            childFragmentManager.backStackEntryCount
+        } catch (e: Throwable) {
+            0
+        }
     }
 
     private fun setToolbarByFragment(fragment: Fragment) {

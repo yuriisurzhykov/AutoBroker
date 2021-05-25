@@ -47,7 +47,7 @@ class InitActivity : AbstractActivity() {
     private fun performLogin(loginStatus: Int) {
         when (loginStatus) {
             ErrorCode.OK -> {
-                (application as AutoBrokerApplication).syncUser(viewModel.user!!.userId)
+                (application as AutoBrokerApplication).syncUser(viewModel.user!!.strId)
                 openMainScreen()
             }
             ErrorCode.ERROR_ON_BOARDING_NEEDED -> openLoginScreen(Bundle().apply {

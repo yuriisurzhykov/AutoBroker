@@ -12,5 +12,6 @@ data class UserLocationRoom(
     @ColumnInfo(name = "locationId")
     val locationId: Long,
     var city: String,
-    var region: String
+    var regionId: String,
+    var regionName: String
 )

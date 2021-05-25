@@ -66,7 +66,7 @@ constructor(
                     UserField(
                         UserField.FIELD_REGION,
                         app.getString(R.string.hint_country),
-                        user.location.region
+                        user.location.regionName
                     )
                 )
                 detailsList.add(
@@ -113,8 +113,8 @@ constructor(
                     user.location.city = city ?: user.location.city
                 }
                 val region = fields.find { it.getId() == UserField.FIELD_REGION }?.getValue()
-                if (region != user.location.region) {
-                    user.location.region = region ?: user.location.region
+                if (region != user.location.regionName) {
+                    user.location.regionName = region ?: user.location.regionName
                 }
                 userRepository.updateUser(user)
                 updateResult.postValue(ErrorCode.OK)

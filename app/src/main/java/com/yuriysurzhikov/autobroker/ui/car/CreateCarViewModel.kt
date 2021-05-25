@@ -25,7 +25,9 @@ import com.yuriysurzhikov.autobroker.repository.local.UserRepositoryImpl
 import com.yuriysurzhikov.autobroker.repository.utils.RegionNumberConverter
 import com.yuriysurzhikov.autobroker.ui.widget.adapters.UserAttachesAdapter
 import com.yuriysurzhikov.autobroker.util.CarNumberUtils
+import com.yuriysurzhikov.autobroker.util.Const
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
+import com.yuriysurzhikov.autobroker.util.isNotNullOrEmpty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -44,6 +46,7 @@ constructor(
 
     private val carBrands = MutableLiveData<List<CarBrand>?>()
     private val carModelsByBrand = MutableLiveData<List<CarModel>?>()
+    private val result = MutableLiveData<Int>()
 
     private val selectedImagesUri = MutableLiveData<List<Uri>>(emptyList())
 
@@ -103,6 +106,10 @@ constructor(
         carModelsByBrand.observe(owner, observer)
     }
 
+    fun observeResult(owner: LifecycleOwner, observer: Observer<Int>) {
+        result.observe(owner, observer)
+    }
+
     fun observeAttaches(
         owner: LifecycleOwner,
         observer: Observer<List<UserAttachesAdapter.UserAttach>>
@@ -155,7 +162,7 @@ constructor(
                     val carBrand = carBrands.value?.get(selectedCarBrand.get())
                     val carNumber =
                         RegionNumberConverter().convertFromString("${regionCode.get()}|${number.get()}|${serialNumber.get()}")
-                    userLocalRepository.createCar(
+                    val resultId = userLocalRepository.createCar(
                         price,
                         title,
                         mileage,
@@ -164,6 +171,7 @@ constructor(
                         carNumber,
                         selectedImagesUri.value!!
                     )
+                    result.postValue(if (resultId.isNotNullOrEmpty()) ErrorCode.OK else ErrorCode.ERROR_LOAD_FAILED)
                 } finally {
                     loading.set(false)
                 }
@@ -179,25 +187,36 @@ constructor(
         if (regionCode.get().isNullOrEmpty() || !CarNumberUtils.isValidRegion(regionCode.get())) {
             regionCodeError.set(app.getString(R.string.error_region_code_invalid))
             isValid = false
+        } else {
+            regionCodeError.set(null)
         }
         if (number.get().isNullOrEmpty() || number.get()!!.length < 4) {
             numberError.set(app.getString(R.string.error_number_invalid))
             isValid = false
+        } else {
+            numberError.set(null)
         }
         if (adTitle.get().isNullOrEmpty()) {
             adTitleError.set(app.getString(R.string.error_required_fields_empty))
             isValid = false
+        } else {
+            adTitleError.set(null)
         }
         if (price.get().isNullOrEmpty()) {
             priceError.set(app.getString(R.string.error_required_fields_empty))
             isValid = false
+        } else {
+            priceError.set(null)
         }
         if (mileage.get().isNullOrEmpty()) {
             mileageError.set(app.getString(R.string.error_required_fields_empty))
             isValid = false
+        } else {
+            mileageError.set(null)
         }
         if (selectedCarModel.get() == null) {
             Toast.makeText(app, app.getString(R.string.msg_select_model), Toast.LENGTH_LONG).show()
+            isValid = false
         }
         return isValid
     }

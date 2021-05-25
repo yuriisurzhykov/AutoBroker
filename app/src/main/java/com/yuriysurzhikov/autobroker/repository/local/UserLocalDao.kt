@@ -26,7 +26,7 @@ abstract class UserLocalDao :
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract fun createLocation(locationRoom: UserLocationRoom)
 
-    @Query("SELECT * FROM usrLocation WHERE region = :region AND city = :city")
+    @Query("SELECT * FROM usrLocation WHERE regionId = :region AND city = :city")
     abstract fun getLocationByRegionAndCity(region: String, city: String): UserLocationRoom
 
     @Query("SELECT * FROM usrLocation WHERE locationId = :id")

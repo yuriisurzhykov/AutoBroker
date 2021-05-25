@@ -10,11 +10,8 @@ import com.yuriysurzhikov.autobroker.repository.database.LocalDatabase
 import com.yuriysurzhikov.autobroker.repository.remote.UserFirebaseRepository
 import com.yuriysurzhikov.autobroker.repository.utils.FormatUtils
 import com.yuriysurzhikov.autobroker.util.IEntityMapper
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -60,14 +57,17 @@ class UserRepositoryImpl @Inject constructor(
         if (roomUser != null) {
             userRepository.createLocation(locationMapper.mapFromEntity(user.location)!!)
             roomUser.locationId = userRepository
-                .getLocationByRegionAndCity(user.location.region, user.location.city).locationId
+                .getLocationByRegionAndCity(user.location.regionId, user.location.city).locationId
             userRepository.update(roomUser)
             firebaseRepository.updateUser(user)
         }
     }
 
     override suspend fun deleteUser(user: User) {
-        TODO("Not yet implemented")
+        val roomUser = localMapper.mapFromEntity(user)
+        if (roomUser != null) {
+            localDatabase.getUserRepository().delete(roomUser)
+        }
     }
 
     override suspend fun changeDisplayName(user: User, newName: String?) {
@@ -146,7 +146,7 @@ class UserRepositoryImpl @Inject constructor(
         carBrand: CarBrand,
         carNumber: RegionNumber,
         images: List<Uri>
-    ) {
+    ): String? {
         val user = getMainUser()
         if (user != null) {
             val uploadedImages = images.map {
@@ -157,14 +157,15 @@ class UserRepositoryImpl @Inject constructor(
                 brandId = carBrand.id,
                 modelId = carModel.id,
                 regionNumber = carNumber,
-                cost = FormatUtils.parseCost(price),
-                mileage = FormatUtils.parseMileage(mileage),
+                cost = FormatUtils.castPrice(price),
+                mileage = FormatUtils.castMileage(mileage),
                 description = "Description",
                 carYearIssue = "2020",
                 imagesUri = uploadedImages
             )
             localDatabase.getUserCarRepository().add(car)
-            firebaseRepository.createCarForUser(user.strId, carMapper.mapToEntity(car))
+            return firebaseRepository.createCarForUser(user.strId, carMapper.mapToEntity(car))
         }
+        return null
     }
 }

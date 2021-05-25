@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.yuriysurzhikov.autobroker"
-        minSdkVersion 21
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -57,6 +57,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    implementation "android.arch.lifecycle:extensions:$archLifecycleVersion"
+    annotationProcessor "android.arch.lifecycle:compiler:$archLifecycleVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
     //View model for Kotlin

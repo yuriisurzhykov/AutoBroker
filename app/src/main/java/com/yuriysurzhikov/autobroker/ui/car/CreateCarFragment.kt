@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.databinding.Observable
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,11 +19,13 @@ import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.FragmentCarCreateBinding
 import com.yuriysurzhikov.autobroker.model.entity.CarBrand
 import com.yuriysurzhikov.autobroker.model.entity.CarModel
+import com.yuriysurzhikov.autobroker.repository.ErrorCode
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
 import com.yuriysurzhikov.autobroker.ui.image.ImageListWatchFragment
 import com.yuriysurzhikov.autobroker.ui.list.OnItemClickListener
 import com.yuriysurzhikov.autobroker.ui.widget.adapters.UserAttachesAdapter
+import com.yuriysurzhikov.autobroker.ui.widget.dialogs.LoadingDialogFragment
 import com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe.IRefreshableFragment
 import com.yuriysurzhikov.autobroker.ui.widget.sheets.BottomChooser
 import kotlinx.coroutines.CoroutineScope
@@ -113,6 +117,10 @@ class CreateCarFragment : AbstractFragment(), IRefreshableFragment {
         viewModel.observeCarBrands(viewLifecycleOwner, carBrandsObserver)
         viewModel.observeCarModels(viewLifecycleOwner, carModelsObserver)
         viewModel.observeAttaches(viewLifecycleOwner, attachesObserver)
+        viewModel.observeResult(viewLifecycleOwner, Observer {
+            onResult(it)
+        })
+        viewModel.loading.addOnPropertyChangedCallback(loadingShowCallback)
     }
 
     private fun openCarModelDialog() {
@@ -143,6 +151,25 @@ class CreateCarFragment : AbstractFragment(), IRefreshableFragment {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             REQUEST_IMAGE_PICK -> processImagePick(resultCode, data)
+        }
+    }
+
+    private fun onResult(code: Int?) {
+        when (code) {
+            ErrorCode.OK -> {
+                Toast.makeText(
+                    context,
+                    getString(R.string.msg_upload_successfull),
+                    Toast.LENGTH_LONG
+                ).show()
+                activity?.supportFragmentManager?.popBackStack()
+            }
+            ErrorCode.ERROR_LOAD_FAILED -> {
+                Toast.makeText(context, getString(R.string.msg_upload_failed), Toast.LENGTH_LONG)
+                    .show()
+            }
+            else -> Toast.makeText(context, getString(R.string.msg_unknow_error), Toast.LENGTH_LONG)
+                .show()
         }
     }
 
@@ -221,10 +248,20 @@ class CreateCarFragment : AbstractFragment(), IRefreshableFragment {
         userAttachesAdapter.setItems(it)
     }
 
+    private val loadingShowCallback = object : Observable.OnPropertyChangedCallback() {
+        override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+            if (viewModel.loading.get()) {
+                val dialog = LoadingDialogFragment.create(viewModel.loading)
+                dialog.show(parentFragmentManager, LOADING_DIALOG_TAG)
+            }
+        }
+    }
+
     companion object {
 
         private val TAG = CreateCarFragment::class.simpleName
         private val CAR_MODEL_DIALOG_TAG = "car_model_chooser"
+        private val LOADING_DIALOG_TAG = "car_model_chooser"
 
         private const val REQUEST_IMAGE_PICK = 101
         private const val REQUEST_IMAGE_CAPTURE = 102

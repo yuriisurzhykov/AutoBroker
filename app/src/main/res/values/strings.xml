@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">AutoBroker</string>
     <string name="greetings_message">Welcome to AutoBroker</string>
+    <string name="label_login">Login</string>
     <string name="or">or</string>
     <string name="btn_register">Register</string>
     <string name="btn_login">Login</string>
@@ -13,11 +14,13 @@
     <string name="label_input_your_city">Input your city</string>
     <string name="label_need_more_information">We need a little more information</string>
     <string name="label_your_region">Your region</string>
+    <string name="label_registration_message_prompt">Fill some data to achieve best practice in app</string>
     <string name="label_synchronization">Synchronization</string>
     <string name="label_empty_regions">Region list is empty</string>
     <string name="label_select_region">Please, select region</string>
-    <string name="label_input_email">Input your e-mail first</string>
+    <string name="label_input_email">or Login with E-mail</string>
     <string name="label_settings">Settings</string>
+    <string name="label_registration">Registration</string>
     <string name="label_home">Home</string>
     <string name="label_finder">Finder</string>
     <string name="label_logout">Logout</string>
@@ -49,4 +52,12 @@
     <string name="msg_select_model">Please select the car model!</string>
     <string name="msg_no_car_added">You don\'t have a single car yet.</string>
     <string name="btn_lets_create">Lets create!</string>
+    <string name="label_greetings_subhead">Access account</string>
+    <string name="label_sign_google">Sign in</string>
+    <string name="label_set_pin">Now create and enter your pin</string>
+    <string name="label_no_connection">No network</string>
+    <string name="label_wait_some_time">Loading, please wait a little time…</string>
+    <string name="msg_unknow_error">Something went wrong…</string>
+    <string name="msg_upload_successfull">Successfully created!</string>
+    <string name="msg_upload_failed">Failed to create…</string>
 </resources>
