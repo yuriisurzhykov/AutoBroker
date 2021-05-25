@@ -62,6 +62,7 @@ class SwipeFragmentNavigation {
     }
 
     fun backToMain() {
+        mPagerAdapter.notifyDataSetChanged()
         mCurrentFragmentContainer?.goToMain()
     }
 

@@ -56,7 +56,7 @@ constructor(
                         val userById = localLocalRepository.getUser(user.uid)
                         if (userById != null) {
                             if (userById.fullRegistration) {
-                                localLocalRepository.login(userById)
+                                this@LoginViewModel.user.set(localLocalRepository.login(userById))
                                 loginCode.postValue(Pair(ErrorCode.OK, true))
                             } else {
                                 loginCode.postValue(Pair(ErrorCode.ERROR_ON_BOARDING_NEEDED, true))

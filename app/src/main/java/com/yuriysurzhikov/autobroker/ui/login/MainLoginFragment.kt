@@ -57,7 +57,7 @@ class MainLoginFragment : AbstractLoginFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMainLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -102,7 +102,7 @@ class MainLoginFragment : AbstractLoginFragment() {
                 val account = task.getResult(ApiException::class.java)!!
                 firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                context?.getString(R.string.error_fail_login)
+                showMessage(getString(R.string.error_fail_login))
             }
         }
     }
@@ -116,6 +116,9 @@ class MainLoginFragment : AbstractLoginFragment() {
                 } else {
                     showMessage(context?.getString(R.string.error_fail_login))
                 }
+            }
+            .addOnFailureListener {
+                showMessage(getString(R.string.msg_unknow_error))
             }
     }
 

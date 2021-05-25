@@ -24,6 +24,7 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     private lateinit var mToolbarTitle: TextView
     private var mainFragment: Fragment? = null
     var onBackStackChangeListener: FragmentManager.OnBackStackChangedListener? = null
+    var clazzName: Class<in Fragment>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +60,13 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
         mToolbar.inflateMenu(R.menu.empty_menu)
         mToolbarTitle = view.findViewById(R.id.toolbar_title)
         childFragmentManager.addOnBackStackChangedListener(backStackListener)
-        goToMain()
+        if (mainFragment != null) {
+            childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            childFragmentManager.beginTransaction()
+                .replace(R.id.content_container, mainFragment!!, MAIN_FRAGMENT_TAG)
+                .addToBackStack(MAIN_FRAGMENT_TAG)
+                .commit()
+        }
     }
 
     override fun addFragment(fragment: Fragment, tag: String?, withBackStack: Boolean) {
@@ -85,13 +92,11 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
     }
 
     override fun goToMain() {
-        if (mainFragment != null) {
-            childFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-            childFragmentManager.beginTransaction()
-                .replace(R.id.content_container, mainFragment!!, MAIN_FRAGMENT_TAG)
-                .addToBackStack(MAIN_FRAGMENT_TAG)
-                .commit()
-        }
+        parentFragmentManager.beginTransaction()
+            .detach(this)
+            .attach(this)
+            .addToBackStack("main_container")
+            .commit()
     }
 
     override fun setMainFragment(fragment: Fragment) {
@@ -156,6 +161,11 @@ class FragmentContainer : AbstractFragment(), IFragmentContainer {
         @JvmStatic
         fun newInstance(mainFragment: Fragment) = FragmentContainer().apply {
             this.mainFragment = mainFragment
+        }
+
+        @JvmStatic
+        fun newInstance(mainFragmentClass: Class<in Fragment>?) = FragmentContainer().apply {
+            clazzName = mainFragmentClass
         }
     }
 }

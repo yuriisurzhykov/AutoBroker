@@ -15,11 +15,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.yuriysurzhikov.autobroker.AutoBrokerApplication
 import com.yuriysurzhikov.autobroker.R
 import com.yuriysurzhikov.autobroker.databinding.FragmentCarCreateBinding
 import com.yuriysurzhikov.autobroker.model.entity.CarBrand
 import com.yuriysurzhikov.autobroker.model.entity.CarModel
 import com.yuriysurzhikov.autobroker.repository.ErrorCode
+import com.yuriysurzhikov.autobroker.repository.core.ISynchronizer
 import com.yuriysurzhikov.autobroker.ui.AbstractFragment
 import com.yuriysurzhikov.autobroker.ui.INavigationCallbacks
 import com.yuriysurzhikov.autobroker.ui.image.ImageListWatchFragment
@@ -28,11 +30,17 @@ import com.yuriysurzhikov.autobroker.ui.widget.adapters.UserAttachesAdapter
 import com.yuriysurzhikov.autobroker.ui.widget.dialogs.LoadingDialogFragment
 import com.yuriysurzhikov.autobroker.ui.widget.fragmentswipe.IRefreshableFragment
 import com.yuriysurzhikov.autobroker.ui.widget.sheets.BottomChooser
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class CreateCarFragment : AbstractFragment(), IRefreshableFragment {
+
+    @Inject
+    lateinit var synchronizer: ISynchronizer
 
     private lateinit var binding: FragmentCarCreateBinding
     private lateinit var viewModel: CreateCarViewModel
@@ -162,7 +170,8 @@ class CreateCarFragment : AbstractFragment(), IRefreshableFragment {
                     getString(R.string.msg_upload_successfull),
                     Toast.LENGTH_LONG
                 ).show()
-                activity?.supportFragmentManager?.popBackStack()
+                AutoBrokerApplication.sync(synchronizer)
+                parentFragmentManager.popBackStack()
             }
             ErrorCode.ERROR_LOAD_FAILED -> {
                 Toast.makeText(context, getString(R.string.msg_upload_failed), Toast.LENGTH_LONG)

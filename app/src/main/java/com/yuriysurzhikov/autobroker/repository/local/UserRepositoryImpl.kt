@@ -109,7 +109,7 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun login(user: User?) {
+    override suspend fun login(user: User?): User? {
         if (user != null) {
             user.isLoggedIn = true
             val userRoom = localMapper.mapFromEntity(user)
@@ -118,6 +118,7 @@ class UserRepositoryImpl @Inject constructor(
                 firebaseRepository.updateUser(user)
             }
         }
+        return user
     }
 
     override suspend fun register(user: User) {

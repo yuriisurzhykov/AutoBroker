@@ -7,14 +7,14 @@ import androidx.room.Update
 
 interface ICrudRepository<T> {
     @Delete
-    suspend fun delete(item: T)
+    fun delete(item: T)
 
-    @Update
-    suspend fun update(item: T)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addAll(items: List<T>)
+    @Update(onConflict = OnConflictStrategy.ABORT)
+    fun update(item: T)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun add(item: T)
+    fun addAll(items: List<T>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun add(item: T)
 }

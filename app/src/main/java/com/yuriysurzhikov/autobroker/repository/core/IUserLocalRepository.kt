@@ -17,6 +17,6 @@ interface IUserLocalRepository {
     suspend fun changeLocationData(user: User, location: UserLocation)
     suspend fun checkUserExists(id: String): Boolean
     suspend fun logout(forAllPhones: Boolean)
-    suspend fun login(user: User?)
+    suspend fun login(user: User?): User?
     suspend fun register(user: User)
 }

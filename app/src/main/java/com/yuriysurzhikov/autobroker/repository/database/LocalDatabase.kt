@@ -18,7 +18,7 @@ import com.yuriysurzhikov.autobroker.repository.utils.RegionNumberConverter
         CarModelRoom::class,
         CarRoom::class
     ],
-    version = 3,
+    version = 1,
     exportSchema = false
 )
 @TypeConverters(ImagesListConverter::class, RegionNumberConverter::class)
